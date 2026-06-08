@@ -1,4 +1,4 @@
-const ECOMMERCE_API_URL = "https://api-ecommerce.hostinger.com";
+const API_URL = "http://localhost:5000/api";
 const ECOMMERCE_STORE_ID = "store_01KSAXA7KN4HBC64NR48B90B3C";
 
 export const formatCurrency = (priceInCents, currencyInfo) => {

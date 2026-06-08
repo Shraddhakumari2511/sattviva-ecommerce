@@ -1,5 +1,4 @@
-
-import React, { useState, useMemo } from 'react';
+import React, {useState, useMemo, useEffect} from "react";
 import { Helmet } from 'react-helmet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Star, Heart, SlidersHorizontal, ChevronDown } from 'lucide-react';
@@ -7,6 +6,8 @@ import { useCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+
 
 // 33 Hardcoded Products matching the requested catalog
 const allProducts = [
@@ -53,6 +54,28 @@ const allProducts = [
 const categories = ['All', 'Oils', 'Ghee', 'Dry Fruits', 'Spices', 'Health Punch'];
 
 const ProductCatalog = () => {
+  const [products, setProducts] = useState([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/products"
+      );
+
+      const data = await response.json();
+
+      setProducts(data.products || []);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, []);
   const { addToCart } = useCart();
   const { toast } = useToast();
   const [activeCategory, setActiveCategory] = useState('All');
@@ -60,20 +83,20 @@ const ProductCatalog = () => {
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = activeCategory === 'All' 
-      ? allProducts 
-      : allProducts.filter(p => p.category === activeCategory);
+      ? products 
+      : products.filter(p => p.category === activeCategory);
 
     switch(sortBy) {
       case 'price-low':
-        return filtered.sort((a, b) => a.price - b.price);
+        return filtered;
       case 'price-high':
-        return filtered.sort((a, b) => b.price - a.price);
+        return filtered;
       case 'rating':
-        return filtered.sort((a, b) => b.rating - a.rating);
+        return filtered;
       case 'newest':
       default:
         // Mocking newest by sorting by ID reverse string
-        return filtered.sort((a, b) => b.id.localeCompare(a.id));
+        return filtered;
     }
   }, [activeCategory, sortBy]);
 
@@ -83,16 +106,18 @@ const ProductCatalog = () => {
     
     // Formatting product to match what useCart expects from EcommerceApi
     const formattedProduct = {
-      id: product.id,
-      title: product.title,
-      image: product.image,
-      variants: [{
-        id: `var-${product.id}`,
-        title: product.size,
-        price_formatted: `₹${product.price}`,
-        inventory_quantity: 100, // mock quantity
-      }]
-    };
+  id: product._id,
+  title: product.title,
+  image: product.images?.[0] || "/images/logo.png",
+  variants: [
+    {
+      id: `var-${product._id}`,
+      title: product.category,
+      price_formatted: `₹${product.price}`,
+      inventory_quantity: product.stock,
+    }
+  ]
+};
 
     addToCart(formattedProduct, formattedProduct.variants[0], 1, 100);
     
@@ -182,7 +207,7 @@ const ProductCatalog = () => {
             >
               {filteredAndSortedProducts.map((product, index) => (
                 <motion.div
-                  key={product.id}
+                  key={product._id}
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.05 }}
@@ -194,7 +219,7 @@ const ProductCatalog = () => {
                   
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img 
-                      src={product.image} 
+                      src={product.images?.[0] || "/images/logo.png"} 
                       alt={product.title}
                       loading="lazy"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { getProduct, getProductQuantities } from '@/api/EcommerceApi';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
@@ -14,9 +13,13 @@ function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const selectedVariant = {
+  id: product?._id,
+  title: product?.category,
+  inventory_quantity: product?.stock || 0,
+};
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedVariant, setSelectedVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { addToCart } = useCart();
@@ -73,49 +76,27 @@ function ProductDetailPage() {
     }
   }, [product?.images]);
 
-  useEffect(() => {
-    const fetchProductData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const fetchedProduct = await getProduct(id);
+useEffect(() => {
+  const fetchProduct = async () => {
+    try {
+      setLoading(true);
 
-        try {
-          const quantitiesResponse = await getProductQuantities({
-            fields: 'inventory_quantity',
-            product_ids: [fetchedProduct.id]
-          });
+      const response = await fetch(
+        `http://localhost:5000/api/products/${id}`
+      );
 
-          const variantQuantityMap = new Map();
-          quantitiesResponse.variants.forEach(variant => {
-            variantQuantityMap.set(variant.id, variant.inventory_quantity);
-          });
+      const data = await response.json();
 
-          const productWithQuantities = {
-            ...fetchedProduct,
-            variants: fetchedProduct.variants.map(variant => ({
-              ...variant,
-              inventory_quantity: variantQuantityMap.get(variant.id) ?? variant.inventory_quantity
-            }))
-          };
+      setProduct(data.product);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-          setProduct(productWithQuantities);
-
-          if (productWithQuantities.variants && productWithQuantities.variants.length > 0) {
-            setSelectedVariant(productWithQuantities.variants[0]);
-          }
-        } catch (quantityError) {
-          throw quantityError;
-        }
-      } catch (err) {
-        setError(err.message || 'Failed to load product');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProductData();
-  }, [id, navigate]);
+  fetchProduct();
+}, [id]);
 
   if (loading) {
     return (
@@ -140,14 +121,13 @@ function ProductDetailPage() {
     );
   }
 
-  const price = selectedVariant?.sale_price_formatted ?? selectedVariant?.price_formatted;
-  const originalPrice = selectedVariant?.price_formatted;
+const price = `₹${product?.price || 0}`;  const originalPrice = selectedVariant?.price_formatted;
   const availableStock = selectedVariant ? selectedVariant.inventory_quantity : 0;
   const isStockManaged = selectedVariant?.manage_inventory ?? false;
   const canAddToCart = !isStockManaged || quantity <= availableStock;
 
-  const currentImage = product.images[currentImageIndex];
-  const hasMultipleImages = product.images.length > 1;
+const currentImage =
+  product?.images?.[0] || null;  const hasMultipleImages = product.images.length > 1;
 
   return (
     <>
@@ -221,7 +201,7 @@ function ProductDetailPage() {
                     }`}
                   >
                     <img
-                      src={!image.url ? placeholderImage : image.url}
+                      src={currentImage || "/images/logo.png"}
                       alt={`${product.title} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />

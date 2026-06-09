@@ -1,4 +1,5 @@
 import React, {useState, useMemo, useEffect} from "react";
+import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Star, Heart, SlidersHorizontal, ChevronDown } from 'lucide-react';
@@ -206,6 +207,7 @@ useEffect(() => {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {filteredAndSortedProducts.map((product, index) => (
+                
                 <motion.div
                   key={product._id}
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -218,6 +220,7 @@ useEffect(() => {
                   </button>
                   
                   <div className="relative overflow-hidden aspect-[4/3]">
+                  <Link to={`/product/${product._id}`}>
                     <img 
                       src={product.images?.[0] || "/images/logo.png"} 
                       alt={product.title}
@@ -227,6 +230,7 @@ useEffect(() => {
                     <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur px-3 py-1 rounded text-sm font-semibold shadow-sm">
                       {product.size}
                     </div>
+                    </Link>
                   </div>
 
                   <div className="p-6 flex flex-col flex-grow">
@@ -235,10 +239,12 @@ useEffect(() => {
                       <span className="text-sm font-medium text-foreground">{product.rating}</span>
                       <span className="text-sm text-muted-foreground">({product.reviews})</span>
                     </div>
+                    <Link to={`/product/${product._id}`} className="block">
 
                     <h3 className="heading-font text-2xl font-bold text-foreground mb-2 leading-tight">
                       {product.title}
                     </h3>
+                    </Link>
                     
                     <p className="text-muted-foreground text-sm line-clamp-2 mb-6 flex-grow">
                       {product.description}
@@ -259,6 +265,7 @@ useEffect(() => {
                     </div>
                   </div>
                 </motion.div>
+                
               ))}
             </motion.div>
           </AnimatePresence>

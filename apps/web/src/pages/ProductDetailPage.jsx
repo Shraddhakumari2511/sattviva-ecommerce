@@ -29,7 +29,8 @@ function ProductDetailPage() {
     if (product && selectedVariant) {
       const availableQuantity = selectedVariant.inventory_quantity;
       try {
-        await addToCart(product, selectedVariant, quantity, availableQuantity);
+        const formattedProduct = {...product, image: product.images?.[0] || "/images/logo.png"};
+        await addToCart(formattedProduct, selectedVariant, quantity, availableQuantity);
         toast({
           title: "Added to Cart! 🛒",
           description: `${quantity} x ${product.title} (${selectedVariant.title}) added.`,
@@ -64,17 +65,17 @@ function ProductDetailPage() {
     }
   }, [product?.images?.length]);
 
-  const handleVariantSelect = useCallback((variant) => {
-    setSelectedVariant(variant);
+  // const handleVariantSelect = useCallback((variant) => {
+  //   setSelectedVariant(variant);
 
-    if (variant.image_url && product?.images?.length > 0) {
-      const imageIndex = product.images.findIndex(image => image.url === variant.image_url);
+  //   if (variant.image_url && product?.images?.length > 0) {
+  //     const imageIndex = product.images.findIndex(image => image.url === variant.image_url);
 
-      if (imageIndex !== -1) {
-        setCurrentImageIndex(imageIndex);
-      }
-    }
-  }, [product?.images]);
+  //     if (imageIndex !== -1) {
+  //       setCurrentImageIndex(imageIndex);
+  //     }
+  //   }
+  // }, [product?.images]);
 
 useEffect(() => {
   const fetchProduct = async () => {
@@ -127,7 +128,7 @@ const price = `₹${product?.price || 0}`;  const originalPrice = selectedVarian
   const canAddToCart = !isStockManaged || quantity <= availableStock;
 
 const currentImage =
-  product?.images?.[0] || null;  const hasMultipleImages = product.images.length > 1;
+  product?.images?.[0] || null;  const hasMultipleImages = product?.images?.length > 1;
 
   return (
     <>
@@ -144,7 +145,7 @@ const currentImage =
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="relative">
             <div className="relative overflow-hidden rounded-lg shadow-2xl h-96 md:h-[500px]">
               <img
-                src={!currentImage?.url ? placeholderImage : currentImage.url}
+                src={currentImage || "/images/logo.png"}
                 alt={product.title}
                 className="w-full h-full object-cover"
               />
@@ -168,11 +169,11 @@ const currentImage =
                 </>
               )}
 
-              {product.ribbon_text && (
+              {/* {product.ribbon_text && (
                 <div className="absolute top-4 left-4 bg-pink-500/90 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg">
                   {product.ribbon_text}
                 </div>
-              )}
+              )} */}
             </div>
 
             {hasMultipleImages && (
@@ -213,7 +214,7 @@ const currentImage =
 
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col">
             <h1 className="text-4xl font-bold text-white mb-2">{product.title}</h1>
-            <p className="text-lg text-gray-300 mb-4">{product.subtitle}</p>
+            <p className="text-lg text-gray-300 mb-4">{product.category}</p>
 
             <div className="flex items-baseline gap-3 mb-6">
               <span className="text-4xl font-bold text-purple-400">{price}</span>
@@ -224,7 +225,7 @@ const currentImage =
 
             <div className="prose prose-invert text-gray-300 mb-6" dangerouslySetInnerHTML={{ __html: product.description }} />
 
-            {product.additional_info?.length > 0 && (
+            {/* {product.additional_info?.length > 0 && (
               <div className="mb-6 space-y-4">
                 {product.additional_info
                   .sort((a, b) => a.order - b.order)
@@ -235,25 +236,9 @@ const currentImage =
                     </div>
                   ))}
               </div>
-            )}
+            )} */}
 
-            {product.variants.length > 1 && (
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-white mb-2">Style</h3>
-                <div className="flex flex-wrap gap-2">
-                  {product.variants.map(variant => (
-                    <Button
-                      key={variant.id}
-                      variant={selectedVariant?.id === variant.id ? 'default' : 'outline'}
-                      onClick={() => handleVariantSelect(variant)}
-                      className={`transition-all ${selectedVariant?.id === variant.id ? 'bg-purple-500 border-purple-500' : 'border-white/20 text-white hover:bg-white/10'}`}
-                    >
-                      {variant.title}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
+            
 
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center border border-white/20 rounded-full p-1">
@@ -264,7 +249,7 @@ const currentImage =
             </div>
 
             <div className="mt-auto">
-              <Button onClick={handleAddToCart} size="lg" className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled={!canAddToCart || !product.purchasable}>
+              <Button onClick={handleAddToCart} size="lg" className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled={!canAddToCart}>
                 <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>
 
@@ -280,11 +265,11 @@ const currentImage =
                 </p>
               )}
 
-              {!product.purchasable && (
+              {/* {!product.purchasable && (
                   <p className="text-sm text-red-400 mt-3 flex items-center justify-center gap-2">
                     <XCircle size={16} /> Currently unavailable
                   </p>
-              )}
+              )} */}
             </div>
           </motion.div>
         </div>

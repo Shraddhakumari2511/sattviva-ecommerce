@@ -11,6 +11,7 @@ import OurStoryPage from '@/pages/OurStoryPage.jsx';
 import LabReportsPage from '@/pages/LabReportsPage.jsx';
 import LoginPage from "@/pages/LoginPage.jsx";
 // import RegisterPage from "@/pages/RegisterPage.jsx";
+import MyOrdersPage from "@/pages/MyOrdersPage.jsx";
 
 import StorePage from '@/pages/StorePage.jsx';
 import ProductCatalog from '@/pages/ProductCatalog.jsx';

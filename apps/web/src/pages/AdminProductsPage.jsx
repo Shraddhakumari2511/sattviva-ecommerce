@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 
 const AdminProductsPage = () => {
   const [products, setProducts] = useState([]);
+  const [editingId, setEditingId] = useState(null);
 
   const [formData, setFormData] = useState({
   title: "",
@@ -31,49 +32,63 @@ const AdminProductsPage = () => {
     }
   };
 
-  const addProduct = async (e) => {
+  const saveProduct = async (e) => {
   e.preventDefault();
 
   try {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(
-      "http://localhost:5000/api/products",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      }
-    );
+const url = editingId
+  ? `http://localhost:5000/api/products/${editingId}`
+  : "http://localhost:5000/api/products";
 
-    const data = await response.json();
+const method = editingId
+  ? "PUT"
+  : "POST";
 
-    if (data.success) {
-      fetchProducts();
+const response = await fetch(url, {
+  method,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+  body: JSON.stringify(formData),
+});
 
-      setFormData({
-        title: "",
-        description: "",
-        category: "",
-        price: "",
-        stock: "",
-        sku: "",
-      });
+const data = await response.json();
 
-      alert("Product Added Successfully");
-    }
-  } catch (error) {
+if (data.success) {
+  fetchProducts();
+
+  setEditingId(null);
+
+  setFormData({
+    title: "",
+    description: "",
+    category: "",
+    price: "",
+    stock: "",
+    sku: "",
+  });
+
+  alert(
+    editingId
+      ? "Product Updated Successfully"
+      : "Product Added Successfully"
+  );
+}
+
+} catch (error) {
     console.error(error);
   }
 };
+
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  
   const deleteProduct = async (id) => {
   try {
     const token = localStorage.getItem("token");
@@ -98,6 +113,8 @@ const AdminProductsPage = () => {
   }
 };
 
+
+
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold mb-8">
@@ -105,7 +122,7 @@ const AdminProductsPage = () => {
       </h1>
 
       <form
-  onSubmit={addProduct}
+  onSubmit={saveProduct}
   className="border rounded-lg p-4 mb-6 space-y-3"
 >
   <input
@@ -186,7 +203,7 @@ const AdminProductsPage = () => {
     type="submit"
     className="bg-green-600 text-white px-4 py-2 rounded"
   >
-    Add Product
+    {editingId ? "Update Product" : "Add Product"}
   </button>
 </form>
 
@@ -211,6 +228,24 @@ const AdminProductsPage = () => {
             <p>
               Category: {product.category}
             </p>
+
+            <button
+  onClick={() => {
+    setEditingId(product._id);
+
+    setFormData({
+      title: product.title,
+      description: product.description,
+      category: product.category,
+      price: product.price,
+      stock: product.stock,
+      sku: product.sku,
+    });
+  }}
+  className="bg-blue-500 text-white px-3 py-1 rounded mt-2 mr-2"
+>
+  Edit
+</button>
 
             <button
   onClick={() => deleteProduct(product._id)}

@@ -14,7 +14,10 @@ const AdminProductsPage = () => {
   price: "",
   stock: "",
   sku: "",
+  images: [],
 });
+
+const [uploading, setUploading] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -113,6 +116,38 @@ if (data.success) {
   }
 };
 
+const uploadImage = async (file) => {
+  try {
+    setUploading(true);
+
+    const imageData = new FormData();
+
+    imageData.append("image", file);
+
+    const response = await fetch(
+      "http://localhost:5000/api/upload",
+      {
+        method: "POST",
+        body: imageData,
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.success) {
+      setFormData(prev => ({
+        ...prev,
+        images: [data.imageUrl],
+      }));
+    }
+
+    setUploading(false);
+  } catch (error) {
+    console.error(error);
+    setUploading(false);
+  }
+};
+
 
 
   return (
@@ -199,6 +234,26 @@ if (data.success) {
     className="border p-2 w-full"
   />
 
+ <input
+  type="file"
+  accept="image/*"
+  onChange={(e) =>
+    uploadImage(e.target.files[0])
+  }
+/>
+
+{uploading && (
+  <p>Uploading image...</p>
+)}
+
+{formData.images.length > 0 && (
+  <img
+    src={formData.images[0]}
+    alt="Preview"
+    className="w-32 h-32 object-cover rounded"
+  />
+)}
+
   <button
     type="submit"
     className="bg-green-600 text-white px-4 py-2 rounded"
@@ -240,6 +295,7 @@ if (data.success) {
       price: product.price,
       stock: product.stock,
       sku: product.sku,
+      images: [],
     });
   }}
   className="bg-blue-500 text-white px-3 py-1 rounded mt-2 mr-2"

@@ -69,7 +69,10 @@ const ProductCard = ({ product, index = 0 }) => {
           {/* Image Container */}
           <div className="relative h-[300px] bg-white flex items-center justify-center p-4">
   <img
-    src={product.image || placeholderImage}
+    src={
+  product.images?.[0] ||
+  "/images/logo.png"
+}
     alt={product.title}
     className="max-w-full max-h-full object-contain"
   />

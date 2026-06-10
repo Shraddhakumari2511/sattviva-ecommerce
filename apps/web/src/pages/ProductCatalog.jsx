@@ -101,7 +101,7 @@ useEffect(() => {
     }
   }, [activeCategory, sortBy]);
 
-  const handleAddToCart = (e, product) => {
+  const handleAddToCart = async (e, product) => {
     e.preventDefault();
     e.stopPropagation();
     
@@ -112,13 +112,30 @@ useEffect(() => {
   image: product.images?.[0] || "/images/logo.png",
   variants: [
     {
-      id: `var-${product._id}`,
+      id: product._id,
       title: product.category,
       price_formatted: `₹${product.price}`,
       inventory_quantity: product.stock,
     }
   ]
 };
+
+const token = localStorage.getItem("token");
+
+await fetch(
+  "http://localhost:5000/api/cart/add",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      productId: product._id,
+      quantity: 1,
+    }),
+  }
+);
 
     addToCart(formattedProduct, formattedProduct.variants[0], 1, 100);
     

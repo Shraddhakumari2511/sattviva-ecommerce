@@ -19,6 +19,50 @@ export const CartProvider = ({ children }) => {
   });
 
   useEffect(() => {
+  const fetchCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      const response = await fetch(
+        "http://localhost:5000/api/cart",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!data.success || !data.cart) return;
+
+      const formattedItems = data.cart.items.map(item => ({
+        product: {
+          ...item.product,
+          image: item.product.images?.[0] || "/images/logo.png",
+        },
+        variant: {
+          id: item.product._id,
+          title: item.product.category,
+          price_formatted: `₹${item.product.price}`,
+          inventory_quantity: item.product.stock,
+        },
+        quantity: item.quantity,
+      }));
+
+      setCartItems(formattedItems);
+
+    } catch (error) {
+      console.error("Cart fetch error:", error);
+    }
+  };
+
+  fetchCart();
+}, []);
+
+  useEffect(() => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
   }, [cartItems]);
 
@@ -49,17 +93,63 @@ export const CartProvider = ({ children }) => {
     });
   }, [cartItems]);
 
-  const removeFromCart = useCallback((variantId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.variant.id !== variantId));
-  }, []);
+  const removeFromCart = useCallback(async (variantId) => {
+  try {
+    const token = localStorage.getItem("token");
 
-  const updateQuantity = useCallback((variantId, quantity) => {
+    await fetch(
+      `http://localhost:5000/api/cart/remove/${variantId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.variant.id === variantId ? { ...item, quantity } : item
+      prevItems.filter(
+        item => item.variant.id !== variantId
       )
     );
-  }, []);
+  } catch (error) {
+    console.error(error);
+  }
+}, []);
+
+  const updateQuantity = useCallback(
+  async (variantId, quantity) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await fetch(
+        "http://localhost:5000/api/cart/update",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            productId: variantId,
+            quantity,
+          }),
+        }
+      );
+
+      setCartItems(prevItems =>
+        prevItems.map(item =>
+          item.variant.id === variantId
+            ? { ...item, quantity }
+            : item
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  []
+);
 
   const clearCart = useCallback(() => {
     setCartItems([]);

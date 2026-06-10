@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart as ShoppingCartIcon, X } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { Button } from '@/components/ui/button';
-import { initializeCheckout } from '@/api/EcommerceApi';
 import { useToast } from '@/hooks/use-toast';
 
 const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
@@ -21,18 +20,32 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
     }
 
     try {
-      const items = cartItems.map(item => ({
-        variant_id: item.variant.id,
-        quantity: item.quantity,
-      }));
+      const token = localStorage.getItem("token");
 
-      const successUrl = `${window.location.origin}/success`;
-      const cancelUrl = window.location.href;
+const response = await fetch(
+  "http://localhost:5000/api/orders",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
-      const { url } = await initializeCheckout({ items, successUrl, cancelUrl });
+const data = await response.json();
 
-      clearCart();
-      window.location.href = url;
+if (!data.success) {
+  throw new Error(data.message);
+}
+
+clearCart();
+
+toast({
+  title: "Order Placed Successfully 🎉",
+  description: "Your order has been created.",
+});
+
+setIsCartOpen(false);
     } catch (error) {
       toast({
         title: 'Checkout Error',

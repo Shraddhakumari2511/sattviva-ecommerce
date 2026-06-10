@@ -30,6 +30,25 @@ function ProductDetailPage() {
       const availableQuantity = selectedVariant.inventory_quantity;
       try {
         const formattedProduct = {...product, image: product.images?.[0] || "/images/logo.png"};
+
+        const token = localStorage.getItem("token");
+
+
+await fetch(
+  "http://localhost:5000/api/cart/add",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      productId: product._id,
+      quantity,
+    }),
+  }
+);
+
         await addToCart(formattedProduct, selectedVariant, quantity, availableQuantity);
         toast({
           title: "Added to Cart! 🛒",

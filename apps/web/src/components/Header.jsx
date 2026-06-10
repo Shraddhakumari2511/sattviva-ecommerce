@@ -148,9 +148,11 @@ const Header = ({ onCartOpen }) => {
               <Button variant="ghost" size="icon" className="hidden md:flex text-foreground hover:text-secondary">
                 <Search size={20} />
               </Button>
+              <Link to="/login">
               <Button variant="ghost" size="icon" className="hidden md:flex text-foreground hover:text-secondary">
                 <User size={20} />
               </Button>
+              </Link>
               <Button
                 variant="ghost"
                 size="icon"

@@ -47,23 +47,12 @@ const MyOrdersPage = () => {
             <h3 className="font-bold">
               Order ID: {order._id}
             </h3>
-            <p>
-  Date: {new Date(order.createdAt).toLocaleDateString()}
-</p>
+            <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
 
-            <p
-  className={
-    order.orderStatus === "Delivered"
-      ? "text-green-600"
-      : "text-yellow-600"
-  }
->
-  Status: {order.orderStatus}
-</p>
+            <p className={ order.orderStatus === "Delivered"? "text-green-600": "text-yellow-600"}>Status: {order.orderStatus}</p>
             <p>Total: ₹{order.totalAmount}</p>
 
-            <div className="mt-3">
-              {order.items.map(item => (
+            <div className="mt-3">{order.items.map(item => (
                 <div
                   key={item._id}
                   className="flex justify-between border-b py-2"

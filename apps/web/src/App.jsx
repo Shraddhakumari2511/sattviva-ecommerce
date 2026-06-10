@@ -12,6 +12,7 @@ import LabReportsPage from '@/pages/LabReportsPage.jsx';
 import LoginPage from "@/pages/LoginPage.jsx";
 // import RegisterPage from "@/pages/RegisterPage.jsx";
 import MyOrdersPage from "@/pages/MyOrdersPage.jsx";
+import AdminOrdersPage from "@/pages/AdminOrdersPage.jsx";
 
 import StorePage from '@/pages/StorePage.jsx';
 import ProductCatalog from '@/pages/ProductCatalog.jsx';
@@ -41,6 +42,7 @@ function App() {
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/login" element={<LoginPage />} />
             {/* <Route path="/register" element={<RegisterPage />} /> */}
+            <Route path="/admin/orders" element={<AdminOrdersPage />}/>
             <Route path="/my-orders" element={<MyOrdersPage />}/>
             <Route path="*" element={
               <div className="min-h-[60vh] flex items-center justify-center bg-background">

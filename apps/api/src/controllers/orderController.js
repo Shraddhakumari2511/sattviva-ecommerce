@@ -3,7 +3,21 @@ import Product from "../models/Product.js";
 import Order from "../models/Order.js";
 
 export const createOrder = async (req, res) => {
+
+
+    
+
   try {
+
+    console.log("BODY:", req.body);
+    const {
+  fullName,
+  phone,
+  address,
+  city,
+  state,
+  pincode,
+} = req.body;
     const cart = await Cart.findOne({
       user: req.user.userId,
     }).populate("items.product");
@@ -44,10 +58,21 @@ export const createOrder = async (req, res) => {
     }
 
     const order = await Order.create({
-      user: req.user.userId,
-      items: orderItems,
-      totalAmount,
-    });
+  user: req.user.userId,
+
+  items: orderItems,
+
+  totalAmount,
+
+  shippingAddress: {
+    fullName,
+    phone,
+    address,
+    city,
+    state,
+    pincode,
+  },
+});
 
     cart.items = [];
 
@@ -127,6 +152,39 @@ export const updateOrderStatus = async (
     }
 
     order.orderStatus = status;
+
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const updateTrackingNumber = async (
+  req,
+  res
+) => {
+  try {
+    const order = await Order.findById(
+      req.params.id
+    );
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    order.trackingNumber =
+      req.body.trackingNumber;
 
     await order.save();
 

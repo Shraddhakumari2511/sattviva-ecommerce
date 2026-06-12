@@ -1,59 +1,19 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart as ShoppingCartIcon, X } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from "react-router-dom";
 
 const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
-  const { toast } = useToast();
-  const { cartItems, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
+  const navigate = useNavigate();
 
-  const handleCheckout = useCallback(async () => {
-    if (cartItems.length === 0) {
-      toast({
-        title: 'Your cart is empty',
-        description: 'Add some products to your cart before checking out.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem("token");
-
-const response = await fetch(
-  "http://localhost:5000/api/orders",
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
-
-const data = await response.json();
-
-if (!data.success) {
-  throw new Error(data.message);
-}
-
-clearCart();
-
-toast({
-  title: "Order Placed Successfully 🎉",
-  description: "Your order has been created.",
-});
-
-setIsCartOpen(false);
-    } catch (error) {
-      toast({
-        title: 'Checkout Error',
-        description: 'There was a problem initializing checkout. Please try again.',
-        variant: 'destructive',
-      });
-    }
-  }, [cartItems, clearCart, toast]);
+  const {
+  cartItems,
+  removeFromCart,
+  updateQuantity,
+  getCartTotal,
+} = useCart();
 
   return (
     <AnimatePresence>
@@ -114,9 +74,8 @@ setIsCartOpen(false);
                   <span className="text-lg font-medium">Total</span>
                   <span className="text-2xl font-bold">{getCartTotal()}</span>
                 </div>
-                <Button onClick={handleCheckout} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 text-base">
-                  Proceed to Checkout
-                </Button>
+        
+                <Button onClick={() => {setIsCartOpen(false);  navigate("/checkout");}}> Proceed to Checkout</Button>
               </div>
             )}
           </motion.div>
@@ -125,5 +84,4 @@ setIsCartOpen(false);
     </AnimatePresence>
   );
 };
-
 export default ShoppingCart;

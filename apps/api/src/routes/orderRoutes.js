@@ -1,6 +1,6 @@
 import express from "express";
 
-import {createOrder, getMyOrders, getAllOrders, updateOrderStatus,} from "../controllers/orderController.js";
+import {createOrder, getMyOrders, getAllOrders, updateOrderStatus, updateTrackingNumber,} from "../controllers/orderController.js";
 
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -17,5 +17,7 @@ router.get("/my-orders", authMiddleware, getMyOrders);
 router.get("/", authMiddleware, adminMiddleware, getAllOrders);
 
 router.put("/:id/status", authMiddleware, adminMiddleware, updateOrderStatus);
+
+router.put("/:id/tracking", authMiddleware, adminMiddleware, updateTrackingNumber);
 
 export default router;

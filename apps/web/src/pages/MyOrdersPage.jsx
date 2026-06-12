@@ -50,6 +50,13 @@ const MyOrdersPage = () => {
             <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
 
             <p className={ order.orderStatus === "Delivered"? "text-green-600": "text-yellow-600"}>Status: {order.orderStatus}</p>
+            {order.trackingNumber && (
+  <p className="mt-2 text-blue-600">
+    Tracking Number:
+    {" "}
+    {order.trackingNumber}
+  </p>
+)}
             <p>Total: ₹{order.totalAmount}</p>
 
             <div className="mt-3">{order.items.map(item => (
@@ -57,9 +64,11 @@ const MyOrdersPage = () => {
                   key={item._id}
                   className="flex justify-between border-b py-2"
                 >
-                  <span>
-                    {item.product.title}
-                  </span>
+                  <p>
+  {item.product
+    ? item.product.title
+    : "Product Deleted"}
+</p>
 
                   <span>
                     Qty: {item.quantity}

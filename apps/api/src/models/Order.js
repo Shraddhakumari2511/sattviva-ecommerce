@@ -55,6 +55,43 @@ const orderSchema = new mongoose.Schema(
       default: "Pending",
     },
 
+    shippingAddress: {
+  fullName: {
+    type: String,
+    required: true,
+  },
+
+  phone: {
+    type: String,
+    required: true,
+  },
+
+  address: {
+    type: String,
+    required: true,
+  },
+
+  city: {
+    type: String,
+    required: true,
+  },
+
+  state: {
+    type: String,
+    required: true,
+  },
+
+  pincode: {
+    type: String,
+    required: true,
+  },
+},
+
+trackingNumber: {
+  type: String,
+  default: "",
+},
+
     razorpayOrderId: String,
     razorpayPaymentId: String,
   },

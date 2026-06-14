@@ -58,13 +58,17 @@ const LoginPage = () => {
 
   
   return (
-    <div className="max-w-md mx-auto py-20">
-      <h1 className="text-3xl font-bold mb-6">
-        Login
-      </h1>
+    <div className="max-w-md mx-auto py-20 px-6">
+      <h1 className="text-4xl font-bold text-center mb-2">
+  Welcome Back
+</h1>
+
+<p className="text-center text-gray-500 mb-8">
+  Login to your account
+</p>
 
       <form onSubmit={handleSubmit}>
-        <input
+        <input className="w-full border rounded-lg p-3 mb-4"
           type="email"
           name="email"
           placeholder="Email"
@@ -72,7 +76,7 @@ const LoginPage = () => {
           onChange={handleChange}
         />
 
-        <input
+        <input className="w-full border rounded-lg p-3 mb-4"
           type="password"
           name="password"
           placeholder="Password"
@@ -80,12 +84,15 @@ const LoginPage = () => {
           onChange={handleChange}
         />
 
-        <button type="submit">
-          Login
-        </button>
+        <button
+  type="submit"
+  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
+>
+  Login
+</button>
       </form>
 
-      <Link to="/register">
+      <Link to="/register"> 
         Register
       </Link>
     </div>

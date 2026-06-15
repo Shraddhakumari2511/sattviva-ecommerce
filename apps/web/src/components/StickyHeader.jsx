@@ -1,4 +1,6 @@
 import React from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, Menu, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -29,6 +31,15 @@ const AnnouncementStrip = () => {
 
 const StickyHeader = ({ onMenuClick, onCartOpen }) => {
   const { cartItems } = useCart();
+ 
+  
+const { user, logout } = useAuth();
+
+
+const handleLogout = () => {
+  logout();
+  toast.success("Logged out successfully");
+};
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -57,33 +68,30 @@ const StickyHeader = ({ onMenuClick, onCartOpen }) => {
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2 sm:gap-4 ml-auto">
-          <Link to="/login" className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-secondary transition-colors">
-            <User size={18} />
-            <span>Login / Signup</span>
-          </Link>
-          
-          <div className="w-px h-6 bg-border hidden lg:block mx-2" />
+        <div>
+          {user ? (
+  <div className="hidden lg:flex items-center gap-4">
+    <span className="text-sm font-medium text-foreground">
+      Hi, {user.name}
+    </span>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative text-foreground hover:bg-muted rounded-full"
-            onClick={onCartOpen}
-          >
-            <ShoppingCart size={22} />
-            {cartItemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-secondary text-secondary-foreground text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-sm border-2 border-background">
-                {cartItemCount}
-              </span>
-            )}
-          </Button>
-
-          <Link to="/products" className="hidden sm:block">
-            <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold rounded-full px-6 gold-glow">
-              Shop Now
-            </Button>
-          </Link>
+    <button
+      onClick={handleLogout}
+      className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-secondary transition-colors"
+    >
+      <User size={18} />
+      <span>Logout</span>
+    </button>
+  </div>
+) : (
+  <Link
+    to="/login"
+    className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-secondary transition-colors"
+  >
+    <User size={18} />
+    <span>Login / Signup</span>
+  </Link>
+)}
         </div>
       </div>
     </header>

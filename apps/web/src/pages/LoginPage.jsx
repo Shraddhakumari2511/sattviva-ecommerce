@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -38,15 +40,7 @@ const LoginPage = () => {
         return;
       }
 
-      localStorage.setItem(
-        "token",
-        data.token
-      );
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(data.user)
-      );
+      login(data.user, data.token);
 
       alert("Login Successful");
 
@@ -83,6 +77,15 @@ const LoginPage = () => {
           value={formData.password}
           onChange={handleChange}
         />
+
+        <div className="text-right mb-4">
+  <Link
+    to="/forgot-password"
+    className="text-green-600 hover:underline"
+  >
+    Forgot Password?
+  </Link>
+</div>
 
         <button
   type="submit"

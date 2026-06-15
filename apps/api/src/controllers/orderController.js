@@ -1,6 +1,8 @@
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
 import Order from "../models/Order.js";
+import User from "../models/User.js";
+import sendEmail from "../utils/sendEmail.js";
 
 export const createOrder = async (req, res) => {
 
@@ -73,6 +75,58 @@ export const createOrder = async (req, res) => {
     pincode,
   },
 });
+
+const user = await User.findById(
+  req.user.userId
+);
+
+const productList = cart.items.map(
+    (item) =>
+      `${item.product.title} x ${item.quantity}`
+  )
+  .join("\n");
+
+  await sendEmail(
+  user.email,
+  "Order Confirmation - SattViva",
+  `
+Hello ${user.name},
+
+Thank you for your order!
+
+Order ID: ${order._id}
+
+Products:
+${productList}
+
+Total Amount: ₹${totalAmount}
+
+Your order has been received and is being processed.
+
+Regards,
+SattViva Team
+`
+);
+
+
+await sendEmail(
+  "support@sattviva.com",
+  "New Order Received",
+  `
+Customer: ${user.name}
+
+Email: ${user.email}
+
+Order ID: ${order._id}
+
+Products:
+${productList}
+
+Total Amount: ₹${totalAmount}
+`
+);
+
+
 
     cart.items = [];
 

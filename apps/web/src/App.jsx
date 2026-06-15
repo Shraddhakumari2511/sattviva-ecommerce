@@ -18,6 +18,9 @@ import AdminRoute from "@/components/AdminRoute";
 import CheckoutPage from "@/pages/CheckoutPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage.jsx";
+import ResetPasswordPage from "@/pages/ResetPasswordPage.jsx";
+
 import StorePage from '@/pages/StorePage.jsx';
 import ProductCatalog from '@/pages/ProductCatalog.jsx';
 import ProductDetailPage from '@/pages/ProductDetailPage.jsx';
@@ -46,6 +49,9 @@ function App() {
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/admin/orders" element={<AdminRoute><AdminOrdersPage /></AdminRoute>}/>            <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>}/>            <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>}/>
             <Route path="/admin/products" element={<AdminRoute><AdminProductsPage /></AdminRoute>}/>            <Route path="*" element={
               <div className="min-h-[60vh] flex items-center justify-center bg-background">

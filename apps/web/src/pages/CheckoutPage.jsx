@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, {useState,useEffect,} from "react";
 import { useCart } from "@/hooks/useCart";
 
 
 
 const CheckoutPage = () => {
 
+  const [addresses, setAddresses] = useState([]);
     
   const { cartItems, getCartTotal, clearCart } = useCart();
 
@@ -26,6 +27,62 @@ const CheckoutPage = () => {
     state: "",
     pincode: "",
   });
+
+  useEffect(() => {
+  fetchAddresses();
+}, []);
+
+const fetchAddresses = async () => {
+  try {
+    const token = localStorage.getItem(
+      "token"
+    );
+
+    const response = await fetch(
+      "http://localhost:5000/api/addresses",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.success) {
+      setAddresses(data.addresses);
+
+      const defaultAddress =
+        data.addresses.find(
+          (a) => a.isDefault
+        );
+
+      if (defaultAddress) {
+        setShippingAddress({
+          fullName:
+            defaultAddress.fullName,
+
+          phone:
+            defaultAddress.phone,
+
+          address:
+            defaultAddress.address,
+
+          city:
+            defaultAddress.city,
+
+          state:
+            defaultAddress.state,
+
+          pincode:
+            defaultAddress.pincode,
+        });
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const handlePlaceOrder = async () => {
 
@@ -97,6 +154,68 @@ const CheckoutPage = () => {
           <h2 className="text-xl font-bold mb-4">
             📦 Shipping Address
           </h2>
+
+          <div className="space-y-3 mb-5">
+  {addresses.map((address) => (
+    <div
+      key={address._id}
+      className={`border rounded-lg p-3 cursor-pointer ${
+        shippingAddress.address ===
+        address.address
+          ? "border-green-600"
+          : ""
+      }`}
+      onClick={() =>
+        setShippingAddress({
+          fullName:
+            address.fullName,
+
+          phone:
+            address.phone,
+
+          address:
+            address.address,
+
+          city:
+            address.city,
+
+          state:
+            address.state,
+
+          pincode:
+            address.pincode,
+        })
+      }
+    >
+      <div className="flex items-center gap-2">
+
+        <strong>
+          {address.nickname}
+        </strong>
+
+        {address.isDefault && (
+          <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
+            Default
+          </span>
+        )}
+      </div>
+
+      <p>
+        {address.fullName}
+      </p>
+
+      <p>
+        {address.address}
+      </p>
+
+      <p>
+        {address.city},{" "}
+        {address.state} -
+        {address.pincode}
+      </p>
+    </div>
+  ))}
+</div>
 
           <input
             placeholder="Full Name"

@@ -18,6 +18,7 @@ import AdminRoute from "@/components/AdminRoute";
 import CheckoutPage from "@/pages/CheckoutPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import MyAddressesPage from "@/pages/MyAddressesPage";
+import ProfilePage from "@/pages/ProfilePage";
 
 import ForgotPasswordPage from "@/pages/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "@/pages/ResetPasswordPage.jsx";
@@ -51,6 +52,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/addresses" element={<ProtectedRoute><MyAddressesPage /></ProtectedRoute>}/>
+            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}/>
+            
 
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />

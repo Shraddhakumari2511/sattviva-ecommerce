@@ -3,6 +3,7 @@ import Product from "../models/Product.js";
 import Order from "../models/Order.js";
 import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
+import razorpay from "../config/razorpay.js";
 
 export const createOrder = async (req, res) => {
 
@@ -19,6 +20,8 @@ export const createOrder = async (req, res) => {
   city,
   state,
   pincode,
+  razorpayOrderId,
+  razorpayPaymentId,
 } = req.body;
     const cart = await Cart.findOne({
       user: req.user.userId,
@@ -65,6 +68,12 @@ export const createOrder = async (req, res) => {
   items: orderItems,
 
   totalAmount,
+
+  paymentStatus: "Paid",
+
+  razorpayOrderId,
+
+  razorpayPaymentId,
 
   shippingAddress: {
     fullName,
@@ -136,14 +145,90 @@ Total Amount: ₹${totalAmount}
       success: true,
       order,
     });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
+  }catch (error) {
+  console.log("FULL ERROR:");
+  console.log(error);
+
+  console.log("ERROR RESPONSE:");
+  console.log(error.response?.data);
+
+  res.status(500).json({
+    success: false,
+    message: error.message,
+  });
+}
 };
 
+export const createRazorpayOrder = async (
+  req,
+  res
+) => {
+  console.log(
+  process.env.RAZORPAY_KEY_ID
+);
+
+console.log(
+  process.env.RAZORPAY_KEY_SECRET
+);
+  try {
+    const cart = await Cart.findOne({
+      user: req.user.userId,
+    }).populate("items.product");
+
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Cart is empty",
+      });
+    }
+
+    let totalAmount = 0;
+
+    for (const item of cart.items) {
+      totalAmount +=
+        item.product.price *
+        item.quantity;
+    }
+
+    const options = {
+      amount: totalAmount * 100,
+      currency: "INR",
+      receipt:
+        "receipt_" + Date.now(),
+    };
+
+    const razorpayOrder =
+      await razorpay.orders.create(
+        options
+      );
+
+      
+    res.status(200).json({
+      success: true,
+      order:
+        razorpayOrder,
+      amount:
+        totalAmount,
+    });
+  } catch (error) {
+  console.log("========== RAZORPAY ERROR ==========");
+  console.log(error);
+
+  console.log("STATUS CODE:");
+  console.log(error.statusCode);
+
+  console.log("ERROR DESCRIPTION:");
+  console.log(error.error);
+
+  console.log("MESSAGE:");
+  console.log(error.message);
+
+  res.status(500).json({
+    success: false,
+    message: error.message,
+  });
+}
+};
 export const getMyOrders = async (
   req,
   res

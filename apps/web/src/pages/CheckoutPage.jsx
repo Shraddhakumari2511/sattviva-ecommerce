@@ -5,6 +5,10 @@ import { useCart } from "@/hooks/useCart";
 
 const CheckoutPage = () => {
 
+  console.log(
+    import.meta.env.VITE_RAZORPAY_KEY_ID
+  );
+
   const [addresses, setAddresses] = useState([]);
     
   const { cartItems, getCartTotal, clearCart } = useCart();
@@ -31,7 +35,24 @@ const CheckoutPage = () => {
   useEffect(() => {
   fetchAddresses();
 }, []);
+const loadRazorpay = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
 
+    script.src =
+      "https://checkout.razorpay.com/v1/checkout.js";
+
+    script.onload = () => {
+      resolve(true);
+    };
+
+    script.onerror = () => {
+      resolve(false);
+    };
+
+    document.body.appendChild(script);
+  });
+};
 const fetchAddresses = async () => {
   try {
     const token = localStorage.getItem(
@@ -86,6 +107,13 @@ const fetchAddresses = async () => {
 
   const handlePlaceOrder = async () => {
 
+    const res = await loadRazorpay();
+
+if (!res) {
+  alert("Razorpay SDK failed to load");
+  return;
+}
+
     if (
   !shippingAddress.fullName ||
   !shippingAddress.phone ||
@@ -113,7 +141,7 @@ const fetchAddresses = async () => {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5000/api/orders",
+        "http://localhost:5000/api/orders/create-razorpay-order",
         {
           method: "POST",
           headers: {
@@ -130,15 +158,109 @@ const fetchAddresses = async () => {
         alert(data.message);
         return;
       }
+      const options = {
+  key:
+    import.meta.env.VITE_RAZORPAY_KEY_ID,
 
+  amount:
+    data.order.amount,
+
+  currency:
+    data.order.currency,
+
+  name:
+    "SattViva",
+
+  description:
+    "Order Payment",
+
+  order_id:
+    data.order.id,
+
+  handler: async function (
+    response
+  ) {
+    console.log(response);
+
+    const orderResponse =
+      await fetch(
+        "http://localhost:5000/api/orders",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            Authorization:
+              `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            ...shippingAddress,
+
+            razorpayOrderId:
+              response.razorpay_order_id,
+
+            razorpayPaymentId:
+              response.razorpay_payment_id,
+          }),
+        }
+      );
+
+    const orderData =
+      await orderResponse.json();
+
+    if (
+      orderData.success
+    ) {
       clearCart();
 
-      alert("Order Placed Successfully 🎉");
-      window.location.href="/success";
+      alert(
+        "Payment Successful 🎉"
+      );
+
+      window.location.href =
+        "/success";
+    }
+  },
+
+  prefill: {
+  name: shippingAddress.fullName,
+  contact: shippingAddress.phone,
+},
+
+modal: {
+  ondismiss: function () {
+    console.log("Popup closed");
+  },
+},
+
+  theme: {
+    color: "#16a34a",
+  },
+};
+
+console.log("OPTIONS =", options);
+console.log(window.Razorpay);
+console.log("Before Open");
+const razorpay =
+  new window.Razorpay(
+    options
+
+  );
+  
+razorpay.open();
+console.log("After Open");
+
     } catch (error) {
       console.error(error);
     }
   };
+
+  setTimeout(() => {
+  console.log(document.querySelector("iframe"));
+}, 2000);
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">

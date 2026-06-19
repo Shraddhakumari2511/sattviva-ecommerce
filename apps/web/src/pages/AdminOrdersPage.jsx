@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const AdminOrdersPage = () => {
+  const [stats, setStats] = useState({totalOrders: 0, revenue: 0,});
   const [orders, setOrders] = useState([]);
   const [trackingInputs, setTrackingInputs] = useState({});
 
@@ -20,6 +21,17 @@ const AdminOrdersPage = () => {
       const data = await response.json();
 
       if (data.success) {
+        setOrders(data.orders);
+
+setStats({
+  totalOrders: data.orders.length,
+
+  revenue: data.orders.reduce(
+    (sum, order) =>
+      sum + order.totalAmount,
+    0
+  ),
+});
         setOrders(data.orders);
       }
     } catch (error) {
@@ -126,6 +138,46 @@ const updateTracking = async (
       <h1 className="text-3xl font-bold mb-8">
         Admin Orders Dashboard
       </h1>
+
+      <div className="grid md:grid-cols-3 gap-5 mb-8">
+
+  <div className="bg-white shadow rounded-xl p-6 border">
+    <p className="text-gray-500">
+      Total Orders
+    </p>
+
+    <h2 className="text-3xl font-bold text-blue-600">
+      {stats.totalOrders}
+    </h2>
+  </div>
+
+  <div className="bg-white shadow rounded-xl p-6 border">
+    <p className="text-gray-500">
+      Revenue
+    </p>
+
+    <h2 className="text-3xl font-bold text-green-600">
+      ₹{stats.revenue}
+    </h2>
+  </div>
+
+  <div className="bg-white shadow rounded-xl p-6 border">
+    <p className="text-gray-500">
+      Delivered Orders
+    </p>
+
+    <h2 className="text-3xl font-bold text-purple-600">
+      {
+        orders.filter(
+          order =>
+            order.orderStatus ===
+            "Delivered"
+        ).length
+      }
+    </h2>
+  </div>
+
+</div>
 
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {orders.map(order => (

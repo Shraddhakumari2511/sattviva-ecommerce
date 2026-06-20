@@ -152,8 +152,12 @@ export const CartProvider = ({ children }) => {
 );
 
   const clearCart = useCallback(() => {
-    setCartItems([]);
-  }, []);
+  setCartItems([]);
+
+  localStorage.removeItem(
+    CART_STORAGE_KEY
+  );
+}, []);
 
   const getCartTotal = useCallback(() => {
     return formatCurrency(cartItems.reduce((total, item) => {

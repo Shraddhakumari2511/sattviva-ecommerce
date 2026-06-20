@@ -95,6 +95,17 @@ const productList = cart.items.map(
   )
   .join("\n");
 
+  cart.items = [];
+
+    await cart.save();
+
+    console.log("Cart cleared successfully");
+
+    res.status(201).json({
+      success: true,
+      order,
+    });
+
   await sendEmail(
   user.email,
   "Order Confirmation - SattViva",
@@ -135,16 +146,12 @@ Total Amount: ₹${totalAmount}
 `
 );
 
+ console.log("Before clearing cart");
 
 
-    cart.items = [];
 
-    await cart.save();
 
-    res.status(201).json({
-      success: true,
-      order,
-    });
+    
   }catch (error) {
   console.log("FULL ERROR:");
   console.log(error);

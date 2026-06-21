@@ -19,6 +19,8 @@ import CheckoutPage from "@/pages/CheckoutPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import MyAddressesPage from "@/pages/MyAddressesPage";
 import ProfilePage from "@/pages/ProfilePage";
+import AdminCouponsPage from "@/pages/AdminCouponsPage";
+
 
 import ForgotPasswordPage from "@/pages/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "@/pages/ResetPasswordPage.jsx";
@@ -53,7 +55,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/addresses" element={<ProtectedRoute><MyAddressesPage /></ProtectedRoute>}/>
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}/>
-            
+            <Route path="/admin/coupons" element={<AdminRoute><AdminCouponsPage /></AdminRoute>}/>
 
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />

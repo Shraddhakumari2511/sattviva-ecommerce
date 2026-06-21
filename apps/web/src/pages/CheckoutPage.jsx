@@ -13,6 +13,9 @@ const CheckoutPage = () => {
     
   const { cartItems, getCartTotal, clearCart } = useCart();
 
+  const [visibleCoupons, setVisibleCoupons] =
+  useState([]);
+
   if (cartItems.length === 0) {
   return (
     <div className="min-h-[70vh] flex items-center justify-center">
@@ -32,9 +35,32 @@ const CheckoutPage = () => {
     pincode: "",
   });
 
+  const [couponCode, setCouponCode] =
+  useState("");
+
+const [discount, setDiscount] =
+  useState(0);
+
+const [finalAmount, setFinalAmount] =
+  useState(0);
+
   useEffect(() => {
   fetchAddresses();
+  fetchCoupons();
 }, []);
+
+useEffect(() => {
+  const total =
+    cartItems.reduce(
+      (sum, item) =>
+        sum +
+        item.product.price *
+          item.quantity,
+      0
+    );
+
+  setFinalAmount(total);
+}, [cartItems]);
 const loadRazorpay = () => {
   return new Promise((resolve) => {
     const script = document.createElement("script");
@@ -105,6 +131,74 @@ const fetchAddresses = async () => {
   }
 };
 
+const fetchCoupons = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/coupons"
+    );
+
+    const data = await response.json();
+
+    if (data.success) {
+      setVisibleCoupons(
+        data.coupons
+      );
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const applyCoupon = async () => {
+  try {
+    const total = cartItems.reduce(
+  (sum, item) =>
+    sum +
+    item.product.price * item.quantity,
+  0
+);
+
+setFinalAmount(total);
+
+    const response = await fetch(
+      "http://localhost:5000/api/coupons/apply",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+
+        body: JSON.stringify({
+  code: couponCode,
+  amount: total,
+}),
+      }
+    );
+
+    const data =
+      await response.json();
+
+    if (!data.success) {
+      alert(data.message);
+      return;
+    }
+
+    setDiscount(data.discount);
+
+    setFinalAmount(
+      data.finalAmount
+    );
+
+    alert(
+      "Coupon Applied 🎉"
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   const handlePlaceOrder = async () => {
 
     const res = await loadRazorpay();
@@ -148,7 +242,10 @@ if (!res) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(shippingAddress),
+          body: JSON.stringify({
+  ...shippingAddress,
+  finalAmount,
+}),
         }
       );
 
@@ -453,10 +550,107 @@ console.log("After Open");
             ))}
           </div>
 
-          <div className="flex justify-between mt-8 text-2xl font-bold text-green-600">
-            <span>Total</span>
-            <span>{getCartTotal()}</span>
-          </div>
+<div className="space-y-3 mb-5">
+
+  <h3 className="font-bold">
+    🎉 Available Offers
+  </h3>
+
+  {visibleCoupons.map((coupon) => (
+    <div
+      key={coupon._id}
+      className="border rounded-xl p-3 bg-green-50"
+    >
+      <div className="flex justify-between items-center">
+
+        <div>
+          <p className="font-bold text-green-700">
+            {coupon.code}
+          </p>
+
+          <p className="text-sm text-gray-500">
+            {coupon.discountValue}
+            {coupon.discountType ===
+            "percentage"
+              ? "% OFF"
+              : "₹ OFF"}
+
+            {" "}above ₹
+            {coupon.minimumAmount}
+          </p>
+        </div>
+
+        <button
+          className="bg-green-600 text-white px-4 py-2 rounded-lg"
+          onClick={() =>
+            setCouponCode(coupon.code)
+          }
+        >
+          Use
+        </button>
+
+      </div>
+    </div>
+  ))}
+
+</div>
+          <div className="mt-6">
+  <input
+    type="text"
+    placeholder="Enter Coupon Code"
+    value={couponCode}
+    onChange={(e) =>
+      setCouponCode(
+        e.target.value
+      )
+    }
+    className="w-full border rounded-lg p-3"
+  />
+
+  <button
+    onClick={applyCoupon}
+    className="w-full mt-3 bg-orange-500 text-white py-3 rounded-lg"
+  >
+    Apply Coupon
+  </button>
+</div>
+
+
+          <div className="space-y-3 mt-8">
+
+  <div className="flex justify-between">
+    <span>Subtotal</span>
+
+    <span>
+      ₹{
+        cartItems.reduce(
+          (sum, item) =>
+            sum +
+            item.product.price *
+              item.quantity,
+          0
+        )
+      }
+    </span>
+  </div>
+
+  <div className="flex justify-between text-red-500">
+    <span>Discount</span>
+
+    <span>
+      -₹{discount}
+    </span>
+  </div>
+
+  <div className="border-t pt-3 flex justify-between text-2xl font-bold text-green-600">
+    <span>Total</span>
+
+    <span>
+      ₹{finalAmount}
+    </span>
+  </div>
+
+</div>
 
           <button
             onClick={handlePlaceOrder}

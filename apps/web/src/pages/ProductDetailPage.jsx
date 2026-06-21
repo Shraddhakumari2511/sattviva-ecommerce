@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
-import { ShoppingCart, Loader2, ArrowLeft, CheckCircle, Minus, Plus, XCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShoppingCart, Loader2, ArrowLeft, CheckCircle, Minus, Plus, XCircle, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
 const placeholderImage = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzc0MTUxIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4K";
 
@@ -121,7 +121,7 @@ useEffect(() => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
-        <Loader2 className="h-16 w-16 text-white animate-spin" />
+        <Loader2 className="h-16 w-16 text-primary animate-spin" />
       </div>
     );
   }
@@ -129,7 +129,7 @@ useEffect(() => {
   if (error || !product) {
     return (
       <div className="max-w-5xl mx-auto">
-        <Link to="/" className="inline-flex items-center gap-2 text-white hover:text-purple-300 transition-colors mb-6">
+        <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-purple-300 transition-colors mb-6">
           <ArrowLeft size={16} />
           Go back
         </Link>
@@ -147,7 +147,11 @@ const price = `₹${product?.price || 0}`;  const originalPrice = selectedVarian
   const canAddToCart = !isStockManaged || quantity <= availableStock;
 
 const currentImage =
-  product?.images?.[0] || null;  const hasMultipleImages = product?.images?.length > 1;
+  product?.images?.[currentImageIndex] ||
+  "/images/logo.png";
+
+    const hasMultipleImages = 
+    product?.images?.length > 1;
 
   return (
     <>
@@ -156,18 +160,18 @@ const currentImage =
         <meta name="description" content={product.description?.substring(0, 160) || product.title} />
       </Helmet>
       <div className="max-w-5xl mx-auto">
-        <Link to="/store" className="inline-flex items-center gap-2 text-white hover:text-purple-300 transition-colors mb-6">
+        <Link to="/store" className="inline-flex items-center gap-2 text-primary hover:text-purple-300 transition-colors mb-6">
           <ArrowLeft size={16} />
           Back to Store
         </Link>
-        <div className="grid md:grid-cols-2 gap-8 glass-card p-8 rounded-2xl">
+        <div className="grid md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl shadow-lg">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="relative">
             <div className="relative overflow-hidden rounded-lg shadow-2xl h-96 md:h-[500px]">
               <img
-                src={currentImage || "/images/logo.png"}
-                alt={product.title}
-                className="w-full h-full object-cover"
-              />
+                  src={currentImage}
+                  alt={product.title}
+                  className="w-full h-full object-cover"
+                />
 
               {hasMultipleImages && (
                 <>
@@ -189,7 +193,7 @@ const currentImage =
               )}
 
               {/* {product.ribbon_text && (
-                <div className="absolute top-4 left-4 bg-pink-500/90 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg">
+                <div className="absolute top-4 left-4 bg-pink-500/90 text-primary text-sm font-bold px-4 py-2 rounded-full shadow-lg">
                   {product.ribbon_text}
                 </div>
               )} */}
@@ -221,7 +225,7 @@ const currentImage =
                     }`}
                   >
                     <img
-                      src={currentImage || "/images/logo.png"}
+                      src={image || "/images/logo.png"}
                       alt={`${product.title} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
@@ -232,17 +236,33 @@ const currentImage =
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col">
-            <h1 className="text-4xl font-bold text-white mb-2">{product.title}</h1>
-            <p className="text-lg text-gray-300 mb-4">{product.category}</p>
+            <h1 className="text-4xl font-bold text-primary mb-2">{product.title}</h1>
+            <div className="flex items-center gap-2 mb-4">
+  <Star
+    className="fill-yellow-400 text-yellow-400"
+    size={18}
+  />
+
+  <span className="font-medium text-primary">
+    4.8
+  </span>
+
+  <span className="text-gray-400">
+    (126 Reviews)
+  </span>
+</div>
+            <p className="text-lg text-gray-600 mb-4">
+  {product.category}
+</p>
 
             <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-4xl font-bold text-purple-400">{price}</span>
+              <span className="text-4xl font-bold text-secondary">{price}</span>
               {selectedVariant?.sale_price_in_cents && (
                 <span className="text-2xl text-gray-400 line-through">{originalPrice}</span>
               )}
             </div>
 
-            <div className="prose prose-invert text-gray-300 mb-6" dangerouslySetInnerHTML={{ __html: product.description }} />
+            <div className="prose text-gray-700 mb-6" dangerouslySetInnerHTML={{ __html: product.description }} />
 
             {/* {product.additional_info?.length > 0 && (
               <div className="mb-6 space-y-4">
@@ -261,9 +281,9 @@ const currentImage =
 
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center border border-white/20 rounded-full p-1">
-                <Button onClick={() => handleQuantityChange(-1)} variant="ghost" size="icon" className="rounded-full h-8 w-8 text-white hover:bg-white/10"><Minus size={16} /></Button>
-                <span className="w-10 text-center text-white font-bold">{quantity}</span>
-                <Button onClick={() => handleQuantityChange(1)} variant="ghost" size="icon" className="rounded-full h-8 w-8 text-white hover:bg-white/10"><Plus size={16} /></Button>
+                <Button onClick={() => handleQuantityChange(-1)} variant="ghost" size="icon" disabled={quantity === 1} className="rounded-full h-8 w-8 text-primary hover:bg-gray-100"><Minus size={16} /></Button>
+                <span className="w-10 text-center text-primary font-bold">{quantity}</span>
+                <Button onClick={() => handleQuantityChange(1)} variant="ghost" size="icon" className="rounded-full h-8 w-8 text-primary hover:bg-gray-100"><Plus size={16} /></Button>
               </div>
             </div>
 
@@ -271,6 +291,19 @@ const currentImage =
               <Button onClick={handleAddToCart} size="lg" className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled={!canAddToCart}>
                 <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>
+
+              <Button
+  onClick={() => {
+    handleAddToCart();
+    navigate("/checkout");
+  }}
+  size="lg"
+  variant="outline"
+  className="w-full mt-4 border-secondary text-secondary hover:bg-secondary hover:text-white"
+>
+  Buy Now
+</Button>
+
 
               {isStockManaged && canAddToCart && product.purchasable && (
                 <p className="text-sm text-green-400 mt-3 flex items-center justify-center gap-2">

@@ -160,11 +160,15 @@ export const CartProvider = ({ children }) => {
 }, []);
 
   const getCartTotal = useCallback(() => {
-    return formatCurrency(cartItems.reduce((total, item) => {
-      const price = item.variant.sale_price_in_cents ?? item.variant.price_in_cents;
-      return total + price * item.quantity;
-    }, 0), cartItems[0].variant.currency_info);
-  }, [cartItems]);
+  const total = cartItems.reduce(
+    (sum, item) =>
+      sum +
+      item.product.price * item.quantity,
+    0
+  );
+
+  return `₹${total}`;
+}, [cartItems]);
 
   const value = useMemo(() => ({
     cartItems,

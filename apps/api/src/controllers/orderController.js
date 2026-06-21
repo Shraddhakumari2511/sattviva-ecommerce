@@ -104,7 +104,7 @@ const productList = cart.items.map(
     res.status(201).json({
       success: true,
       order,
-    });
+    });''
 
   await sendEmail(
   user.email,
@@ -177,6 +177,8 @@ export const createRazorpayOrder = async (
 console.log(
   process.env.RAZORPAY_KEY_SECRET
 );
+
+const { finalAmount } = req.body;
   try {
     const cart = await Cart.findOne({
       user: req.user.userId,
@@ -196,6 +198,10 @@ console.log(
         item.product.price *
         item.quantity;
     }
+
+    if (finalAmount) {
+  totalAmount = finalAmount;
+}
 
     const options = {
       amount: totalAmount * 100,

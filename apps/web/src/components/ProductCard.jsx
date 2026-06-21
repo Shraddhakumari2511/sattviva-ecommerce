@@ -60,7 +60,7 @@ const ProductCard = ({ product, index = 0 }) => {
           {/* Wishlist Button */}
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); toast({ title: "Added to Wishlist" }); }}
-            className="absolute top-3 right-3 z-10 p-2 bg-background/80 backdrop-blur-sm rounded-full text-muted-foreground hover:text-destructive hover:bg-background transition-colors shadow-sm"
+            className="absolute top-3 right-3 z-0 p-2 bg-background/80 backdrop-blur-sm rounded-full text-muted-foreground hover:text-destructive hover:bg-background transition-colors shadow-sm"
             aria-label="Add to wishlist"
           >
             <Heart className="h-4 w-4" />

@@ -22,6 +22,7 @@ function ProductDetailPage() {
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeTab, setActiveTab] =useState("description");
   const { addToCart } = useCart();
   const { toast } = useToast();
 
@@ -262,8 +263,6 @@ const currentImage =
               )}
             </div>
 
-            <div className="prose text-gray-700 mb-6" dangerouslySetInnerHTML={{ __html: product.description }} />
-
             {/* {product.additional_info?.length > 0 && (
               <div className="mb-6 space-y-4">
                 {product.additional_info
@@ -323,8 +322,138 @@ const currentImage =
                   </p>
               )} */}
             </div>
+
+               <div className="mt-8 border-t pt-6">
+
+<div className="flex flex-wrap gap-3 mb-6">
+
+<button
+onClick={() =>
+setActiveTab("description")
+}
+className={`px-5 py-2 rounded-full font-medium transition-all ${
+activeTab === "description"
+? "bg-secondary text-white"
+: "bg-gray-100"
+}`}
+>
+Description
+</button>
+
+<button
+onClick={() =>
+setActiveTab("benefits")
+}
+className={`px-5 py-2 rounded-full font-medium transition-all ${
+activeTab === "benefits"
+? "bg-secondary text-white"
+: "bg-gray-100"
+}`}
+>
+Key Benefits
+</button>
+
+<button
+onClick={() =>
+setActiveTab("nutrition")
+}
+className={`px-5 py-2 rounded-full font-medium transition-all ${
+activeTab === "nutrition"
+? "bg-secondary text-white"
+: "bg-gray-100"
+}`}
+>
+Nutrition
+</button>
+
+<button
+onClick={() =>
+setActiveTab("ingredients")
+}
+className={`px-5 py-2 rounded-full font-medium transition-all ${
+activeTab === "ingredients"
+? "bg-secondary text-white"
+: "bg-gray-100"
+}`}
+>
+Ingredients
+</button>
+
+<button
+onClick={() =>
+setActiveTab("lab")
+}
+className={`px-5 py-2 rounded-full font-medium transition-all ${
+activeTab === "lab"
+? "bg-secondary text-white"
+: "bg-gray-100"
+}`}
+>
+Lab Reports
+</button>
+
+</div>
+
+<div className="bg-gray-50 rounded-xl p-6">
+
+{activeTab === "description" && (
+<div className="text-gray-700 leading-8">
+{product.description}
+</div>
+)}
+
+{activeTab === "benefits" && (
+<ul className="list-disc ml-5 text-gray-700">
+{product.keyBenefits?.map(
+(benefit, index) => (
+<li
+key={index}
+className="mb-3"
+>
+{benefit}
+</li>
+)
+)}
+</ul>
+)}
+
+{activeTab === "nutrition" && (
+<div className="text-gray-700 leading-8">
+{product.nutritionalInformation}
+</div>
+)}
+
+{activeTab === "ingredients" && (
+<div className="text-gray-700 leading-8">
+{product.ingredients}
+</div>
+)}
+
+{activeTab === "lab" && (
+<div>
+{product.labReports?.map(
+(report, index) => (
+<a
+key={index}
+href={report}
+target="_blank"
+className="block text-blue-600 underline mb-3"
+>
+📄 View Report
+</a>
+)
+)}
+</div>
+)}
+
+</div>
+
+</div>
+
+            
           </motion.div>
         </div>
+    
       </div>
     </>
   );

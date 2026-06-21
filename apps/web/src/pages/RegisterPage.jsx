@@ -144,6 +144,7 @@ const handleResendOtp = async () => {
           placeholder="Full Name"
           value={formData.name}
           onChange={handleChange}
+          disabled={showOtpInput}
           className="w-full border rounded-lg p-3"
         />
 
@@ -153,6 +154,7 @@ const handleResendOtp = async () => {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+          disabled={showOtpInput}
           className="w-full border rounded-lg p-3"
         />
 
@@ -162,6 +164,7 @@ const handleResendOtp = async () => {
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
+          disabled={showOtpInput}
           className="w-full border rounded-lg p-3"
         />
 
@@ -171,15 +174,20 @@ const handleResendOtp = async () => {
   placeholder="Confirm Password"
   value={formData.confirmPassword}
   onChange={handleChange}
+  disabled={showOtpInput}
   className="w-full border rounded-lg p-3"
 />
 
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-3 rounded-lg"
-        >
-          Register
-        </button>
+        {
+  !showOtpInput && (
+    <button
+      type="submit"
+      className="w-full bg-green-600 text-white py-3 rounded-lg"
+    >
+      Register
+    </button>
+  )
+}
       </form>
 
       {showOtpInput && (

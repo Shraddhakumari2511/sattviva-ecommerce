@@ -26,6 +26,25 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    keyBenefits: [
+  {
+    type: String,
+  },
+],
+
+nutritionalInformation: {
+  type: String,
+},
+
+ingredients: {
+  type: String,
+},
+
+labReports: [
+  {
+    type: String,
+  },
+],
 
     images: [
       {

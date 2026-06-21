@@ -44,10 +44,37 @@ if (
   await existingUser.save();
 
   await sendEmail(
-    email,
-    "SattViva OTP Verification",
-    `Your OTP is ${otp}`
-  );
+  email,
+  "Welcome to SattViva Naturals - Verify Your Email",
+  `
+Hello ${user.name},
+
+Welcome to SattViva Naturals!
+
+Thank you for creating an account with us. We're excited to have you join our community that values purity, tradition, and wholesome nutrition.
+
+To complete your registration and secure your account, please verify your email address using the OTP below:
+
+OTP: ${otp}
+
+If you did not create an account with SattViva Naturals, you can safely ignore this email.
+
+Once verified, you'll be able to:
+
+• Track your orders
+• Save delivery addresses
+• Access exclusive offers and updates
+• Enjoy a faster checkout experience
+
+Thank you for choosing SattViva Naturals.
+
+When Purity Meets Life
+
+Warm Regards,
+Team SattViva Naturals
+www.sattvivanaturals.com
+`
+);
 
   return res.status(200).json({
     success: true,
@@ -70,8 +97,35 @@ if (
 
 await sendEmail(
   email,
-  "SattViva OTP Verification",
-  `Your OTP is ${otp}`
+  "Welcome to SattViva Naturals - Verify Your Email",
+  `
+Hello ${user.name},
+
+Welcome to SattViva Naturals!
+
+Thank you for creating an account with us. We're excited to have you join our community that values purity, tradition, and wholesome nutrition.
+
+To complete your registration and secure your account, please verify your email address using the OTP below:
+
+OTP: ${otp}
+
+If you did not create an account with SattViva Naturals, you can safely ignore this email.
+
+Once verified, you'll be able to:
+
+• Track your orders
+• Save delivery addresses
+• Access exclusive offers and updates
+• Enjoy a faster checkout experience
+
+Thank you for choosing SattViva Naturals.
+
+When Purity Meets Life
+
+Warm Regards,
+Team SattViva Naturals
+www.sattvivanaturals.com
+`
 );
     res.status(201).json({
       success: true,
@@ -159,6 +213,13 @@ export const verifyOtp = async (req, res) => {
 
     const user = await User.findOne({ email });
 
+    console.log("DB OTP:", user.otp);
+console.log("Entered OTP:", otp);
+console.log("DB OTP type:", typeof user.otp);
+console.log("Entered OTP type:", typeof otp);
+console.log("OTP Expiry:", user.otpExpiry);
+console.log("Current Time:", Date.now());
+
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -173,15 +234,20 @@ export const verifyOtp = async (req, res) => {
       });
     }
 
-    if (
-      user.otp !== otp ||
-      user.otpExpiry < Date.now()
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid or expired OTP",
-      });
-    }
+    const expiryTime = new Date(
+  user.otpExpiry
+).getTime();
+
+if (
+  user.otp.toString() !==
+    otp.toString() ||
+  expiryTime < Date.now()
+) {
+  return res.status(400).json({
+    success: false,
+    message: "Invalid or expired OTP",
+  });
+}
 
     user.isVerified = true;
     user.otp = null;
@@ -240,10 +306,37 @@ export const resendOtp = async (
     await user.save();
 
     await sendEmail(
-      email,
-      "SattViva OTP Verification",
-      `Your new OTP is ${otp}`
-    );
+  email,
+  "Welcome to SattViva Naturals - Verify Your Email",
+  `
+Hello ${user.name},
+
+Welcome to SattViva Naturals!
+
+Thank you for creating an account with us. We're excited to have you join our community that values purity, tradition, and wholesome nutrition.
+
+To complete your registration and secure your account, please verify your email address using the OTP below:
+
+OTP: ${otp}
+
+If you did not create an account with SattViva Naturals, you can safely ignore this email.
+
+Once verified, you'll be able to:
+
+• Track your orders
+• Save delivery addresses
+• Access exclusive offers and updates
+• Enjoy a faster checkout experience
+
+Thank you for choosing SattViva Naturals.
+
+When Purity Meets Life
+
+Warm Regards,
+Team SattViva Naturals
+www.sattvivanaturals.com
+`
+);
 
     res.status(200).json({
       success: true,
@@ -280,11 +373,35 @@ export const forgotPassword = async (req, res) => {
 
     await user.save();
 
-    await sendEmail(
-      email,
-      "Reset Password OTP",
-      `Your OTP for password reset is ${otp}`
-    );
+  
+
+    console.log(user);
+console.log(user.name);
+
+   await sendEmail(
+  email,
+  "Welcome to SattViva Naturals - Verify Your Email",
+  `
+Hello ${user.name},
+
+Welcome to SattViva Naturals!
+
+To change your password and secure your account, please verify your email address using the OTP below:
+
+Your OTP for password reset is ${otp}
+
+If you did not request for forget password with SattViva Naturals, you can safely ignore this email.
+
+
+Thank you for choosing SattViva Naturals.
+
+When Purity Meets Life
+
+Warm Regards,
+Team SattViva Naturals
+www.sattvivanaturals.com
+`
+);
 
     res.status(200).json({
       success: true,
@@ -292,6 +409,7 @@ export const forgotPassword = async (req, res) => {
     });
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -304,6 +422,13 @@ export const resetPassword = async (req, res) => {
 
     const user = await User.findOne({ email });
 
+    console.log("DB OTP:", user.otp);
+console.log("Entered OTP:", otp);
+console.log("DB OTP type:", typeof user.otp);
+console.log("Entered OTP type:", typeof otp);
+console.log("OTP Expiry:", user.otpExpiry);
+console.log("Current Time:", Date.now());
+
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -312,14 +437,14 @@ export const resetPassword = async (req, res) => {
     }
 
     if (
-      user.otp !== otp ||
-      user.otpExpiry < Date.now()
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid or expired OTP",
-      });
-    }
+  user.otp?.toString() !== otp?.toString() ||
+  new Date(user.otpExpiry).getTime() < Date.now()
+) {
+  return res.status(400).json({
+    success: false,
+    message: "Invalid or expired OTP",
+  });
+}
 
     const hashedPassword = await bcrypt.hash(
       newPassword,

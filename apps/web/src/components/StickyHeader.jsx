@@ -6,6 +6,7 @@ import { Search, ShoppingCart, Menu, User,ChevronDown, Package, MapPin, LogOut }
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/hooks/useCart';
+import { Phone } from "lucide-react";
 
 const AnnouncementStrip = () => {
   const announcements = [
@@ -105,6 +106,8 @@ const handleLogout = () => {
         {/* Right Actions */}
 <div className="flex items-center gap-4">
 
+
+
   {/* Cart */}
   <Button
     variant="ghost"
@@ -120,6 +123,8 @@ const handleLogout = () => {
       </span>
     )}
   </Button>
+
+
 
   {/* User */}
   {user ? (
@@ -196,6 +201,14 @@ const handleLogout = () => {
       <span>Login / Signup</span>
     </Link>
   )}
+
+{/* Contact */}
+<Link
+  to="/contact"
+  className="hidden lg:flex text-sm font-medium text-foreground hover:text-secondary transition-colors"
+>
+  Contact Us
+</Link>
 
 </div>
       </div>

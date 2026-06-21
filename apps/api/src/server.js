@@ -15,6 +15,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 
 connectDB();
@@ -41,6 +42,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/coupons", couponRoutes);
+app.use("/api/contact", contactRoutes);
 
 app.get("/", (req, res) => {
   res.json({

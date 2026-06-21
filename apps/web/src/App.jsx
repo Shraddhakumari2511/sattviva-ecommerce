@@ -20,6 +20,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import MyAddressesPage from "@/pages/MyAddressesPage";
 import ProfilePage from "@/pages/ProfilePage";
 import AdminCouponsPage from "@/pages/AdminCouponsPage";
+import ContactPage from "@/pages/ContactPage";
 
 
 import ForgotPasswordPage from "@/pages/ForgotPasswordPage.jsx";
@@ -29,6 +30,7 @@ import StorePage from '@/pages/StorePage.jsx';
 import ProductCatalog from '@/pages/ProductCatalog.jsx';
 import ProductDetailPage from '@/pages/ProductDetailPage.jsx';
 import SuccessPage from '@/pages/SuccessPage.jsx';
+import AdminContactPage from "./pages/AdminContactPage";
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -53,6 +55,10 @@ function App() {
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/admin-contacts" element={<AdminContactPage />}/>
+
+
             <Route path="/addresses" element={<ProtectedRoute><MyAddressesPage /></ProtectedRoute>}/>
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}/>
             <Route path="/admin/coupons" element={<AdminRoute><AdminCouponsPage /></AdminRoute>}/>

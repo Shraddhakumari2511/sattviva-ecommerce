@@ -59,6 +59,11 @@ const AdminCouponsPage = () => {
       alert(
         "Coupon deleted successfully"
       );
+
+      localStorage.setItem(
+    "couponUpdated",
+    Date.now()
+      );
     }
   } catch (error) {
     console.error(error);
@@ -131,6 +136,11 @@ const handleToggleVisible = async (
 
     if (data.success) {
       fetchCoupons();
+
+      localStorage.setItem(
+    "couponUpdated",
+    Date.now()
+      );
     }
   } catch (error) {
     console.error(error);
@@ -173,6 +183,11 @@ const handleToggleActive = async (
 
     if (data.success) {
       fetchCoupons();
+
+      localStorage.setItem(
+    "couponUpdated",
+    Date.now()
+      );
     }
   } catch (error) {
     console.error(error);
@@ -258,6 +273,11 @@ const handleToggleActive = async (
       );
 
       fetchCoupons();
+
+      localStorage.setItem(
+    "couponUpdated",
+    Date.now()
+      );
 
       setEditingCouponId(
         null

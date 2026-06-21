@@ -3,11 +3,15 @@ import { useCart } from "@/hooks/useCart";
 
 
 
+
 const CheckoutPage = () => {
 
   console.log(
     import.meta.env.VITE_RAZORPAY_KEY_ID
   );
+
+
+
 
   const [addresses, setAddresses] = useState([]);
     
@@ -61,6 +65,23 @@ useEffect(() => {
 
   setFinalAmount(total);
 }, [cartItems]);
+
+useEffect(() => {
+  const handleStorageChange = () => {
+    fetchCoupons();
+  };
+
+  window.addEventListener(
+    "storage",
+    handleStorageChange
+  );
+
+  return () =>
+    window.removeEventListener(
+      "storage",
+      handleStorageChange
+    );
+}, []);
 const loadRazorpay = () => {
   return new Promise((resolve) => {
     const script = document.createElement("script");

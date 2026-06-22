@@ -193,6 +193,8 @@ const currentImage =
                 </>
               )}
 
+         
+
               {/* {product.ribbon_text && (
                 <div className="absolute top-4 left-4 bg-pink-500/90 text-primary text-sm font-bold px-4 py-2 rounded-full shadow-lg">
                   {product.ribbon_text}
@@ -233,8 +235,14 @@ const currentImage =
                   </button>
                 ))}
               </div>
+
+              
             )}
+            
+                
           </motion.div>
+
+          
 
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col">
             <h1 className="text-4xl font-bold text-primary mb-2">{product.title}</h1>
@@ -323,136 +331,212 @@ const currentImage =
               )} */}
             </div>
 
-               <div className="mt-8 border-t pt-6">
-
-<div className="flex flex-wrap gap-3 mb-6">
-
-<button
-onClick={() =>
-setActiveTab("description")
-}
-className={`px-5 py-2 rounded-full font-medium transition-all ${
-activeTab === "description"
-? "bg-secondary text-white"
-: "bg-gray-100"
-}`}
->
-Description
-</button>
-
-<button
-onClick={() =>
-setActiveTab("benefits")
-}
-className={`px-5 py-2 rounded-full font-medium transition-all ${
-activeTab === "benefits"
-? "bg-secondary text-white"
-: "bg-gray-100"
-}`}
->
-Key Benefits
-</button>
-
-<button
-onClick={() =>
-setActiveTab("nutrition")
-}
-className={`px-5 py-2 rounded-full font-medium transition-all ${
-activeTab === "nutrition"
-? "bg-secondary text-white"
-: "bg-gray-100"
-}`}
->
-Nutrition
-</button>
-
-<button
-onClick={() =>
-setActiveTab("ingredients")
-}
-className={`px-5 py-2 rounded-full font-medium transition-all ${
-activeTab === "ingredients"
-? "bg-secondary text-white"
-: "bg-gray-100"
-}`}
->
-Ingredients
-</button>
-
-<button
-onClick={() =>
-setActiveTab("lab")
-}
-className={`px-5 py-2 rounded-full font-medium transition-all ${
-activeTab === "lab"
-? "bg-secondary text-white"
-: "bg-gray-100"
-}`}
->
-Lab Reports
-</button>
-
-</div>
-
-<div className="bg-gray-50 rounded-xl p-6">
-
-{activeTab === "description" && (
-<div className="text-gray-700 leading-8">
-{product.description}
-</div>
-)}
-
-{activeTab === "benefits" && (
-<ul className="list-disc ml-5 text-gray-700">
-{product.keyBenefits?.map(
-(benefit, index) => (
-<li
-key={index}
-className="mb-3"
->
-{benefit}
-</li>
-)
-)}
-</ul>
-)}
-
-{activeTab === "nutrition" && (
-<div className="text-gray-700 leading-8">
-{product.nutritionalInformation}
-</div>
-)}
-
-{activeTab === "ingredients" && (
-<div className="text-gray-700 leading-8">
-{product.ingredients}
-</div>
-)}
-
-{activeTab === "lab" && (
-<div>
-{product.labReports?.map(
-(report, index) => (
-<a
-key={index}
-href={report}
-target="_blank"
-className="block text-blue-600 underline mb-3"
->
-📄 View Report
-</a>
-)
-)}
-</div>
-)}
-
-</div>
-
-</div>
+           
 
             
           </motion.div>
         </div>
+
+            <div className="mt-8 border-t pt-6">
+
+<div className="flex flex-wrap gap-3 mb-6">
+
+
+
+</div>
+{/* Product Details */}
+
+<div className="mt-10 space-y-8">
+
+  <div className="bg-gray-50 rounded-2xl p-6 shadow-sm">
+
+    <h2 className="text-2xl font-bold mb-4">
+      Description
+    </h2>
+
+    <p className="text-gray-700 leading-8">
+      {product.description}
+    </p>
+
+  </div>
+
+
+  <div className="bg-gray-50 rounded-2xl p-6 shadow-sm">
+
+    <h2 className="text-2xl font-bold mb-4">
+      Key Benefits
+    </h2>
+
+    <ul className="space-y-3 text-gray-700">
+
+      {product.keyBenefits?.map(
+        (benefit, index) => (
+
+          <li key={index}>
+            ✔ {benefit}
+          </li>
+
+        )
+      )}
+
+    </ul>
+
+  </div>
+
+
+  <div className="bg-gray-50 rounded-2xl p-6 shadow-sm">
+
+    <h2 className="text-2xl font-bold mb-4">
+      Ingredients
+    </h2>
+
+    <p className="text-gray-700 leading-8">
+      {product.ingredients}
+    </p>
+
+  </div>
+
+
+  <div className="bg-gray-50 rounded-2xl p-6 shadow-sm">
+
+    <h2 className="text-2xl font-bold mb-4">
+      Nutritional Information
+    </h2>
+
+    <p className="text-gray-700 leading-8">
+      {product.nutritionalInformation}
+    </p>
+
+  </div>
+
+</div>
+
+</div>
+{/* Uses + Reviews */}
+
+<div className="grid md:grid-cols-2 gap-8 mt-12">
+
+ {/* Uses Section */}
+
+<div className="mt-10">
+
+  <div className="grid gap-6">
+
+  {product.uses?.map((use, index) => (
+
+    <div
+      key={index}
+      className="bg-white rounded-2xl shadow-md overflow-hidden"
+    >
+
+      <img
+        src={use.image}
+        alt={use.title}
+        className="w-full h-52 object-cover"
+      />
+
+      <div className="p-5">
+
+        <h3 className="font-bold text-xl">
+          {use.title}
+        </h3>
+
+        <p className="text-gray-500 mt-2">
+          {use.description}
+        </p>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
+
+
+</div>
+
+  
+
+
+  {/* Reviews */}
+  <div className="bg-white rounded-2xl shadow-md p-8">
+
+    <h2 className="text-2xl font-bold text-primary mb-6">
+      Customer Reviews
+    </h2>
+
+    <div className="space-y-8">
+
+      <div>
+
+        <div className="flex gap-1 mb-3">
+
+          <Star
+            className="fill-yellow-400 text-yellow-400"
+            size={18}
+          />
+
+          <Star
+            className="fill-yellow-400 text-yellow-400"
+            size={18}
+          />
+
+          <Star
+            className="fill-yellow-400 text-yellow-400"
+            size={18}
+          />
+
+          <Star
+            className="fill-yellow-400 text-yellow-400"
+            size={18}
+          />
+
+          <Star
+            className="fill-yellow-400 text-yellow-400"
+            size={18}
+          />
+
+        </div>
+
+        <h3 className="font-semibold">
+          Shraddha Kumari
+        </h3>
+
+        <p className="text-gray-500 mt-2">
+          Amazing quality and authentic taste ❤️
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <div className="flex gap-1 mb-3">
+
+          <Star className="fill-yellow-400 text-yellow-400" size={18}/>
+          <Star className="fill-yellow-400 text-yellow-400" size={18}/>
+          <Star className="fill-yellow-400 text-yellow-400" size={18}/>
+          <Star className="fill-yellow-400 text-yellow-400" size={18}/>
+          <Star className="fill-yellow-400 text-yellow-400" size={18}/>
+
+        </div>
+
+        <h3 className="font-semibold">
+          Rahul Mishra
+        </h3>
+
+        <p className="text-gray-500 mt-2">
+          Packaging was excellent.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
     
       </div>
     </>

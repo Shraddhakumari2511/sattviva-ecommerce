@@ -31,6 +31,13 @@ const productSchema = new mongoose.Schema(
     type: String,
   },
 ],
+uses: [
+  {
+    image: String,
+    title: String,
+    description: String,
+  },
+],
 
 nutritionalInformation: {
   type: String,
@@ -65,6 +72,7 @@ labReports: [
   {
     timestamps: true,
   }
+ 
 );
 
 export default mongoose.model("Product", productSchema);

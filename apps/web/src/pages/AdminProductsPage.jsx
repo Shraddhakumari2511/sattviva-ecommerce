@@ -15,6 +15,10 @@ const AdminProductsPage = () => {
   stock: "",
   sku: "",
   images: [],
+  uses: [],
+  keyBenefits: [],
+  ingredients: "",
+  nutritionalInformation: "",
 });
 
 const [uploading, setUploading] = useState(false);
@@ -49,6 +53,8 @@ const method = editingId
   ? "PUT"
   : "POST";
 
+  console.log(formData);
+  console.log(formData.uses);
 const response = await fetch(url, {
   method,
   headers: {
@@ -64,16 +70,19 @@ if (data.success) {
   fetchProducts();
 
   setEditingId(null);
-
-  setFormData({
-    title: "",
-    description: "",
-    category: "",
-    price: "",
-    stock: "",
-    sku: "",
-  });
-
+setFormData({
+  title: "",
+  description: "",
+  category: "",
+  price: "",
+  stock: "",
+  sku: "",
+  images: [],
+  uses: [],
+  keyBenefits: [],
+  ingredients: "",
+  nutritionalInformation: "",
+});
   alert(
     editingId
       ? "Product Updated Successfully"
@@ -116,39 +125,122 @@ if (data.success) {
   }
 };
 
-const uploadImage = async (file) => {
+const uploadImages = async (
+  files
+) => {
   try {
+
     setUploading(true);
 
-    const imageData = new FormData();
+    let uploadedImages = [];
 
-    imageData.append("image", file);
+    for (const file of files) {
 
-    const response = await fetch(
-      "http://localhost:5000/api/upload",
-      {
-        method: "POST",
-        body: imageData,
+      const imageData =
+        new FormData();
+
+      imageData.append(
+        "image",
+        file
+      );
+
+      const response =
+        await fetch(
+          "http://localhost:5000/api/upload",
+          {
+            method: "POST",
+            body: imageData,
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (data.success) {
+
+        uploadedImages.push(
+          data.imageUrl
+        );
+
       }
-    );
-
-    const data = await response.json();
-
-    if (data.success) {
-      setFormData(prev => ({
-        ...prev,
-        images: [data.imageUrl],
-      }));
     }
 
+    setFormData(prev => ({
+  ...prev,
+  images: [
+    ...prev.images,
+    ...uploadedImages,
+  ],
+}));
+
     setUploading(false);
+
   } catch (error) {
+
     console.error(error);
+
     setUploading(false);
+
   }
 };
+const uploadUseImage = async (
+  file,
+  index
+) => {
+  try {
+
+    console.log(file);
+
+    const imageData =
+      new FormData();
+
+    imageData.append(
+      "image",
+      file
+    );
+
+    const response =
+      await fetch(
+        "http://localhost:5000/api/upload",
+        {
+          method: "POST",
+          body: imageData,
+        }
+      );
+
+    const data =
+      await response.json();
+
+    console.log(data);
 
 
+      if (data.success) {
+
+  setFormData(prev => {
+
+    const updatedUses = [...prev.uses];
+
+    updatedUses[index] = {
+      ...updatedUses[index],
+      image: data.imageUrl,
+    };
+
+    return {
+      ...prev,
+      uses: updatedUses,
+    };
+
+  });
+
+}
+
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+};
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
@@ -234,26 +326,171 @@ const uploadImage = async (file) => {
     className="border p-2 w-full"
   />
 
- <input
-  type="file"
-  accept="image/*"
+  <textarea
+  placeholder="Ingredients"
+  value={formData.ingredients}
   onChange={(e) =>
-    uploadImage(e.target.files[0])
+    setFormData({
+      ...formData,
+      ingredients: e.target.value,
+    })
   }
+  className="border p-2 w-full"
 />
 
+<textarea
+  placeholder="Nutritional Information"
+  value={formData.nutritionalInformation}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      nutritionalInformation:
+        e.target.value,
+    })
+  }
+  className="border p-2 w-full"
+/>
+
+<textarea
+  placeholder="Key Benefits (one per line)"
+  value={formData.keyBenefits.join("\n")}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      keyBenefits:
+        e.target.value
+          .split("\n")
+          .filter(item => item.trim() !== ""),
+    })
+  }
+  className="border p-2 w-full h-32"
+/>
+
+ <input
+  type="file"
+  multiple
+  accept="image/*"
+  onChange={(e) =>
+    uploadImages(e.target.files)
+  }
+/>
 {uploading && (
   <p>Uploading image...</p>
 )}
 
-{formData.images.length > 0 && (
-  <img
-    src={formData.images[0]}
-    alt="Preview"
-    className="w-32 h-32 object-cover rounded"
-  />
-)}
+{
+formData.images?.length > 0&& (
 
+<div className="flex gap-3 flex-wrap mt-4">
+
+  {formData.images?.map(
+    (image, index) => (
+
+      <img
+        key={index}
+        src={image}
+        alt=""
+        className="w-28 h-28 object-cover rounded-lg"
+      />
+
+    )
+  )}
+
+</div>
+
+)
+}
+<button
+  type="button"
+  onClick={() =>
+    setFormData(prev => ({
+      ...prev,
+      uses: [
+        ...prev.uses,
+        {
+          image: "",
+          title: "",
+          description: "",
+        },
+      ],
+    }))
+  }
+  className="bg-purple-600 text-white px-4 py-2 rounded mr-5"
+>
+  Add Use
+</button>
+{formData.uses?.map((use, index) => (
+  <div
+    key={index}
+    className="border p-4 rounded-lg mt-4 space-y-3"
+  >
+   <input
+  placeholder="Use Title"
+  value={use.title || ""}
+  onChange={(e) => {
+    setFormData(prev => {
+
+      const updatedUses = [...prev.uses];
+
+      updatedUses[index] = {
+        ...updatedUses[index],
+        title: e.target.value,
+      };
+
+      return {
+        ...prev,
+        uses: updatedUses,
+      };
+
+    });
+  }}
+  className="border p-2 w-full"
+/>
+    <input
+  placeholder="Use Description"
+  value={use.description || ""}
+  onChange={(e) => {
+    setFormData(prev => {
+
+      const updatedUses = [...prev.uses];
+
+      updatedUses[index] = {
+        ...updatedUses[index],
+        description: e.target.value,
+      };
+
+      return {
+        ...prev,
+        uses: updatedUses,
+      };
+
+    });
+  }}
+  className="border p-2 w-full"
+/>
+    <input
+  type="file"
+  accept="image/*"
+  onChange={(e) =>
+    uploadUseImage(
+      e.target.files[0],
+      index
+    )
+  }
+/>
+{
+use.image && (
+
+<img
+  src={use.image}
+  alt=""
+  className="w-32 h-32 object-cover rounded-lg"
+/>
+
+)
+}
+  </div>
+))}
   <button
     type="submit"
     className="bg-green-600 text-white px-4 py-2 rounded"
@@ -288,15 +525,22 @@ const uploadImage = async (file) => {
   onClick={() => {
     setEditingId(product._id);
 
-    setFormData({
-      title: product.title,
-      description: product.description,
-      category: product.category,
-      price: product.price,
-      stock: product.stock,
-      sku: product.sku,
-      images: [],
-    });
+  setFormData({
+  title: product.title,
+  description: product.description,
+  category: product.category,
+  price: product.price,
+  stock: product.stock,
+  sku: product.sku,
+
+  images: product.images || [],
+  uses: product.uses || [],
+
+  keyBenefits: product.keyBenefits || [],
+  ingredients: product.ingredients || "",
+  nutritionalInformation:
+    product.nutritionalInformation || "",
+});
   }}
   className="bg-blue-500 text-white px-3 py-1 rounded mt-2 mr-2"
 >

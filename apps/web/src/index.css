@@ -83,6 +83,13 @@ html {
     --ring: var(--matte-gold);
   }
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
 
 @layer components {
   .heading-font {

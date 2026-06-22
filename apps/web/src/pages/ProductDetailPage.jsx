@@ -13,6 +13,7 @@ function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [allProducts, setAllProducts] = useState([]);
   const selectedVariant = {
   id: product?._id,
   title: product?.category,
@@ -109,6 +110,18 @@ useEffect(() => {
       const data = await response.json();
 
       setProduct(data.product);
+
+      const productsResponse =
+  await fetch(
+    "http://localhost:5000/api/products"
+  );
+
+const productsData =
+  await productsResponse.json();
+
+setAllProducts(
+  productsData.products
+);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -154,6 +167,10 @@ const currentImage =
     const hasMultipleImages = 
     product?.images?.length > 1;
 
+    const relatedProducts =
+  allProducts.filter(
+    p => p._id !== product._id
+  );
   return (
     <>
       <Helmet>
@@ -535,6 +552,62 @@ const currentImage =
     </div>
 
   </div>
+
+</div>
+
+{/* You May Also Like */}
+
+<div className="mt-20">
+
+  <h2 className="text-3xl font-bold mb-8">
+    You May Also Like
+  </h2>
+
+  <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
+
+  {relatedProducts.map(item => (
+
+    <div
+      key={item._id}
+      className="min-w-[250px] bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
+    >
+
+      <img
+        src={
+          item.images?.[0] ||
+          "/images/logo.png"
+        }
+        alt={item.title}
+        className="w-full h-52 object-cover"
+      />
+
+      <div className="p-4">
+
+        <h3 className="font-bold text-lg">
+          {item.title}
+        </h3>
+
+        <p className="text-gray-500 mt-2">
+          ₹{item.price}
+        </p>
+
+        <Button
+          variant="outline"
+          className="w-full mt-4"
+          onClick={() =>
+  navigate(`/product/${item._id}`)
+}
+        >
+          View Product
+        </Button>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
 
 </div>
     

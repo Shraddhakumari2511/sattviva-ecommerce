@@ -258,7 +258,7 @@ await fetch(
               </div>
             </div>
 
-            <div className="flex items-center gap-3 w-full md:w-auto self-end md:self-auto">
+            {/* <div className="flex items-center gap-3 w-full md:w-auto self-end md:self-auto">
               <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-[180px] bg-background border-border">
@@ -271,7 +271,7 @@ await fetch(
                   <SelectItem value="rating">Highest Rated</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
           </div>
         </section>
 

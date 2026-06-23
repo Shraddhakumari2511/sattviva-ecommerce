@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import ProductsList from '@/components/ProductsList.jsx';
+import ProductCatalog from '@/pages/ProductCatalog.jsx';
 
 const StorePage = () => {
   return (
@@ -29,9 +29,7 @@ const StorePage = () => {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <ProductsList />
-        </div>
+        
       </div>
     </>
   );

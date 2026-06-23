@@ -47,7 +47,7 @@ if (
   email,
   "Welcome to SattViva Naturals - Verify Your Email",
   `
-Hello ${user.name},
+Hello ${name},
 
 Welcome to SattViva Naturals!
 
@@ -99,7 +99,7 @@ await sendEmail(
   email,
   "Welcome to SattViva Naturals - Verify Your Email",
   `
-Hello ${user.name},
+Hello ${name},
 
 Welcome to SattViva Naturals!
 
@@ -137,11 +137,15 @@ www.sattvivanaturals.com
       },
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
+  console.log("REGISTER ERROR:");
+  console.log(error);
+  console.log(error.stack);
+
+  res.status(500).json({
+    success: false,
+    message: error.message,
+  });
+}
 };
 
 export const login = async (req, res) => {
@@ -309,7 +313,7 @@ export const resendOtp = async (
   email,
   "Welcome to SattViva Naturals - Verify Your Email",
   `
-Hello ${user.name},
+Hello ${name},
 
 Welcome to SattViva Naturals!
 

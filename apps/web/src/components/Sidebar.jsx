@@ -147,7 +147,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   </div>
 
   {shopOpen && (
-    <div className="ml-10 mt-2 border-l border-green-700 pl-4 space-y-2">
+    <div className="ml-10 mt-2  border-green-700 pl-4 space-y-2">
       <div>
   <button
     onClick={() => setOilsOpen(!oilsOpen)}
@@ -168,7 +168,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   </button>
 
   {oilsOpen && (
-    <div className="ml-6 mt-2 border-l border-green-600 pl-3 space-y-2">
+    <div className="ml-6 mt-2  border-green-600 pl-3 space-y-2">
       <Link
         to="/products/cold-press-oil"
         className="block text-sm text-primary-foreground/60 hover:text-green-300"
@@ -216,7 +216,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   </div>
 
   {dryFruitsOpen && (
-    <div className="ml-6 mt-2 border-l border-green-600 pl-3 space-y-2">
+    <div className="ml-6 mt-2  border-green-600 pl-3 space-y-2">
 
       <Link
         to="/products/dry-fruits/cashew"

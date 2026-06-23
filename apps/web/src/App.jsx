@@ -49,7 +49,6 @@ function App() {
             <Route path="/lab-reports" element={<LabReportsPage />} />
             
             
-            <Route path="/store" element={<StorePage />} />
             <Route path="/products" element={<ProductCatalog />} />
             <Route path="/products/:category" element={<ProductCatalog />}/>
 
@@ -65,6 +64,7 @@ function App() {
             <Route path="/addresses" element={<ProtectedRoute><MyAddressesPage /></ProtectedRoute>}/>
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}/>
             <Route path="/admin/coupons" element={<AdminRoute><AdminCouponsPage /></AdminRoute>}/>
+            <Route path="/store"element={<ProductCatalog />}/>
 
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />

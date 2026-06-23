@@ -110,7 +110,7 @@ const productList = cart.items.map(
   user.email,
   "Order Confirmation - SattViva",
   `
-Hello ${user.name},
+Hello ${name},
 
 Thank you for your order!
 

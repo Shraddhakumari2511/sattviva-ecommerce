@@ -11,6 +11,7 @@ const AdminProductsPage = () => {
   title: "",
   description: "",
   category: "",
+  subcategory: "",
   price: "",
   stock: "",
   sku: "",
@@ -74,6 +75,7 @@ setFormData({
   title: "",
   description: "",
   category: "",
+  subcategory: "",
   price: "",
   stock: "",
   sku: "",
@@ -287,6 +289,18 @@ const uploadUseImage = async (
     }
     className="border p-2 w-full"
   />
+
+  <input
+  placeholder="Sub Category"
+  value={formData.subcategory}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      subcategory: e.target.value,
+    })
+  }
+  className="border p-2 w-full"
+/>
 
   <input
     placeholder="Price"
@@ -529,6 +543,7 @@ use.image && (
   title: product.title,
   description: product.description,
   category: product.category,
+  subcategory: product.subcategory || "",
   price: product.price,
   stock: product.stock,
   sku: product.sku,

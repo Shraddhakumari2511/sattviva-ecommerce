@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Star, Heart, SlidersHorizontal, ChevronDown } from 'lucide-react';
@@ -55,6 +55,8 @@ const allProducts = [
 const categories = ['All', 'Oils', 'Ghee', 'Dry Fruits', 'Spices', 'Health Punch'];
 
 const ProductCatalog = () => {
+  const { category, subCategory } = useParams();
+  
   const [products, setProducts] = useState([]);
 const [loading, setLoading] = useState(true);
 
@@ -80,26 +82,86 @@ useEffect(() => {
   const { addToCart } = useCart();
   const { toast } = useToast();
   const [activeCategory, setActiveCategory] = useState('All');
+  useEffect(() => {
+
+  if (!category) {
+    setActiveCategory("All");
+    return;
+  }
+
+  if (
+    category === "cold-press-oil" ||
+    category === "wood-press-oil"
+  ) {
+    setActiveCategory("Oils");
+  }
+
+  else if (category === "dry-fruits") {
+    setActiveCategory("Dry Fruits");
+  }
+
+  else if (category === "spices") {
+    setActiveCategory("Spices");
+  }
+
+  else if (category === "health-punch") {
+    setActiveCategory("Health Punch");
+  }
+
+  else if (category === "oils") {
+  setActiveCategory("Oils");
+}
+
+}, [category]);
   const [sortBy, setSortBy] = useState('newest');
 
   const filteredAndSortedProducts = useMemo(() => {
-    let filtered = activeCategory === 'All' 
-      ? products 
-      : products.filter(p => p.category === activeCategory);
 
-    switch(sortBy) {
-      case 'price-low':
-        return filtered;
-      case 'price-high':
-        return filtered;
-      case 'rating':
-        return filtered;
-      case 'newest':
-      default:
-        // Mocking newest by sorting by ID reverse string
-        return filtered;
-    }
-  }, [activeCategory, sortBy]);
+  let filtered =
+  activeCategory === "All"
+    ? products
+    : products.filter(
+        p =>
+          p.category?.toLowerCase() ===
+          activeCategory.toLowerCase()
+      );
+
+if (
+  category === "cold-press-oil" ||
+  category === "wood-press-oil"
+) {
+  filtered = filtered.filter(
+    product =>
+      product.subcategory?.toLowerCase() ===
+      category.toLowerCase()
+  );
+}
+
+
+if (subCategory) {
+  filtered = filtered.filter(
+    product =>
+      product.subcategory?.toLowerCase() ===
+      subCategory.toLowerCase()
+  );
+}
+
+console.log(
+  filtered.map(p => ({
+    title: p.title,
+    category: p.category,
+    subcategory: p.subcategory
+  }))
+);
+
+return filtered;
+}, [
+  products,
+  activeCategory,
+  sortBy,
+  category,
+  subCategory
+]);
 
   const handleAddToCart = async (e, product) => {
     e.preventDefault();

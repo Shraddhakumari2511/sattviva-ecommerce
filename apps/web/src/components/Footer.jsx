@@ -9,6 +9,29 @@ const Footer = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState('');
 
+  const footerLinks = [
+     {
+    name: "Home",
+    path: "/",
+  },
+  {
+    name: "Shop All",
+    path: "/products",
+  },
+  {
+    name: "Our Story",
+    path: "/our-story",
+  },
+  {
+    name: "Lab Reports",
+    path: "/lab-reports",
+  },
+  {
+    name: "Contact Us",
+    path: "/contact",
+  },
+];
+
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     if (email) {
@@ -47,20 +70,26 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <h4 className="heading-font font-semibold text-xl mb-6 text-green-300">Explore</h4>
             <ul className="space-y-3">
-              {['Shop All', 'Our Story', 'Lab Reports', 'Contact Us'].map((item, i) => (
-                <li key={i}>
-                  <Link to="#" className="text-primary-foreground/80 hover:text-green-300 transition-colors text-sm font-light flex items-center gap-2 group">
-                    <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+  {footerLinks.map((item, i) => (
+    <li key={i}>
+      <Link
+        to={item.path}
+        className="text-primary-foreground/80 hover:text-green-300 transition-colors text-sm font-light flex items-center gap-2 group"
+      >
+        <ArrowRight
+          size={12}
+          className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all"
+        />
+        {item.name}
+      </Link>
+    </li>
+  ))}
+</ul>
           </div>
 
           {/* Contact Info */}
           <div className="lg:col-span-3">
-            <h4 className="heading-font font-semibold text-xl mb-6 text-green-300">Contact</h4> ////
+            <h4 className="heading-font font-semibold text-xl mb-6 text-green-300">Contact</h4> 
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-primary-foreground/80 font-light text-sm">
                 <Phone size={18} className="text-green-300 shrink-0 mt-0.5" />

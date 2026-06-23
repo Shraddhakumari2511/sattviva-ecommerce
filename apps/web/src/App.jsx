@@ -51,6 +51,9 @@ function App() {
             
             <Route path="/store" element={<StorePage />} />
             <Route path="/products" element={<ProductCatalog />} />
+            <Route path="/products/:category" element={<ProductCatalog />}/>
+
+            <Route path="/products/:category/:subCategory" element={<ProductCatalog />}/>
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/login" element={<LoginPage />} />

@@ -51,20 +51,7 @@ const HomePage = () => {
         <Hero />
         <TrustBar />
         
-        <div className="py-12">
-          <CategoryCards />
-        </div>
-        
-        {/* Featured Products */}
-        <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <SectionHeader 
-            title="Featured Favorites" 
-            subtitle="Handpicked selections from our premium assortment of traditional staples."
-          />
-          <ProductsList limit={4} />
-        </section>
-
-        
+      
         
 
         <WhyChooseUs />

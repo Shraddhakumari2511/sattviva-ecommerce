@@ -22,10 +22,10 @@ const Hero = () => {
               <span className="text-sm font-semibold text-primary uppercase tracking-wider">Traditional Goodness</span>
             </div>
             
-            <h1 className="heading-font text-4xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight">
-              Wood Pressed Oils.<br />
-              <span className="text-secondary">Pure By Nature.</span>
-            </h1>
+            <h1 className="heading-font text-3xl md:text-4xl lg:text-5xl font-bold text-primary leading-tight">
+  Wood Pressed Oils.<br />
+  <span className="text-secondary">Pure By Nature.</span>
+</h1>
             
             <p className="body-font text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
               Experience the authentic taste and health benefits of traditionally extracted oils, pure desi ghee, and organic spices. Crafted in small batches for your family's wellness.
@@ -54,16 +54,16 @@ const Hero = () => {
             transition={{ duration: 1, delay: 0.2 }}
             className="flex-1 relative w-full max-w-lg mx-auto lg:max-w-none"
           >
-            <div className="relative h-[420px] lg:h-[520px] rounded-3xl overflow-hidden shadow-2xl">
-              <motion.img
-                animate={{ y: [-10, 10, -10], rotate: [-1, 1, -1] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                src="https://images.unsplash.com/photo-1664791461482-79f5deee490f?w=800&h=1000&fit=crop"
-                alt="Premium mustard oil bottle on wooden platform with rustic aesthetic"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent mix-blend-overlay" />
-            </div>
+            <div className="flex-1 relative w-full max-w-md mx-auto">
+  <div className="relative h-[450px] rounded-3xl overflow-hidden shadow-2xl">
+    <img
+      src="https://images.unsplash.com/photo-1664791461482-79f5deee490f?w=800&h=1000&fit=crop"
+      alt="Premium mustard oil bottle on wooden platform with rustic aesthetic"
+      className="w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent mix-blend-overlay" />
+  </div>
+</div>
             
             {/* Decorative Elements */}
             <div className="absolute -top-6 -right-6 w-32 h-32 bg-secondary/20 rounded-full blur-3xl" />

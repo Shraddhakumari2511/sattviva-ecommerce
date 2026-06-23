@@ -16,7 +16,8 @@ const DashboardLayout = ({ children, onCartOpen }) => {
       />
       
       {/* Scrollable Right Content Area */}
-      <div className="flex-1 flex flex-col h-[100dvh] overflow-y-auto md:ml-[280px] relative scroll-smooth">
+      <div id="main-content"
+  className="flex-1 flex flex-col h-[100dvh] overflow-y-auto md:ml-[280px] relative scroll-smooth">
         <StickyHeader 
           onMenuClick={() => setIsSidebarOpen(true)} 
           onCartOpen={onCartOpen}

@@ -172,6 +172,7 @@ return filtered;
   id: product._id,
   title: product.title,
   image: product.images?.[0] || "/images/logo.png",
+  price: product.price,
   variants: [
     {
       id: product._id,

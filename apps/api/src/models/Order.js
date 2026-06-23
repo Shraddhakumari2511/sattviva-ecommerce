@@ -3,11 +3,10 @@ import mongoose from "mongoose";
 const orderSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User",
+  required: false,
+},
     items: [
       {
         product: {
@@ -55,8 +54,13 @@ const orderSchema = new mongoose.Schema(
       default: "Pending",
     },
 
-    shippingAddress: {
+   shippingAddress: {
   fullName: {
+    type: String,
+    required: true,
+  },
+
+  email: {
     type: String,
     required: true,
   },
@@ -86,7 +90,6 @@ const orderSchema = new mongoose.Schema(
     required: true,
   },
 },
-
 trackingNumber: {
   type: String,
   default: "",

@@ -4,8 +4,10 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Download, ShieldCheck, FlaskConical, FileCheck, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from "react-router-dom";
 
 const LabReportsPage = () => {
+  const navigate = useNavigate();
   const reports = [
     {
       title: 'Wood Pressed Groundnut Oil',
@@ -180,9 +182,11 @@ const LabReportsPage = () => {
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               We are committed to complete transparency. If you have any questions about our lab reports or quality standards, please reach out to us.
             </p>
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              Contact Us
-            </Button>
+            <Button
+  onClick={() => navigate("/contact")}
+>
+  Contact Us
+</Button>
           </motion.div>
         </div>
       </div>

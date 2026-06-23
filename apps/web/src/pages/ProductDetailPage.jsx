@@ -31,7 +31,7 @@ function ProductDetailPage() {
     if (product && selectedVariant) {
       const availableQuantity = selectedVariant.inventory_quantity;
       try {
-        const formattedProduct = {...product, image: product.images?.[0] || "/images/logo.png"};
+        const formattedProduct = {...product, image: product.images?.[0] || "/images/logo.png", price: product.price,};
 
         const token = localStorage.getItem("token");
 
@@ -477,7 +477,7 @@ const currentImage =
 
 
   {/* Reviews */}
-  <div className="bg-white rounded-2xl shadow-md p-8">
+  {/* <div className="bg-white rounded-2xl shadow-md p-8">
 
     <h2 className="text-2xl font-bold text-primary mb-6">
       Customer Reviews
@@ -551,7 +551,7 @@ const currentImage =
 
     </div>
 
-  </div>
+  </div> */}
 
 </div>
 

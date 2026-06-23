@@ -68,8 +68,11 @@ function App() {
 
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/admin/orders" element={<AdminRoute><AdminOrdersPage /></AdminRoute>}/>            <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>}/>            <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>}/>
-            <Route path="/admin/products" element={<AdminRoute><AdminProductsPage /></AdminRoute>}/>            <Route path="*" element={
+            <Route path="/admin/orders" element={<AdminRoute><AdminOrdersPage /></AdminRoute>}/>       
+                 <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>}/>   
+                 <Route path="/checkout" element={<CheckoutPage />}/>
+            <Route path="/admin/products" element={<AdminRoute><AdminProductsPage /></AdminRoute>}/>          
+              <Route path="*" element={
               <div className="min-h-[60vh] flex items-center justify-center bg-background">
                 <div className="text-center px-4">
                   <h1 className="heading-font text-5xl font-bold text-primary mb-4">Page Not Found</h1>

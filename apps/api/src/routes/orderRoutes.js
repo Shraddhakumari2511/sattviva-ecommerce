@@ -20,6 +20,6 @@ router.put("/:id/status", authMiddleware, adminMiddleware, updateOrderStatus);
 
 router.put("/:id/tracking", authMiddleware, adminMiddleware, updateTrackingNumber);
 
-router.post("/create-razorpay-order", authMiddleware, createRazorpayOrder);
+router.post("/create-razorpay-order",authMiddleware, createRazorpayOrder);
 
 export default router;

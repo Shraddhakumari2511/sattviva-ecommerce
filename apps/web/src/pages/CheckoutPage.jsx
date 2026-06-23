@@ -1,5 +1,6 @@
 import React, {useState,useEffect,} from "react";
 import { useCart } from "@/hooks/useCart";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -16,6 +17,7 @@ const CheckoutPage = () => {
   const [addresses, setAddresses] = useState([]);
     
   const { cartItems, getCartTotal, clearCart } = useCart();
+  const navigate = useNavigate();
 
   const [visibleCoupons, setVisibleCoupons] =
   useState([]);
@@ -49,8 +51,16 @@ const [finalAmount, setFinalAmount] =
   useState(0);
 
   useEffect(() => {
-  fetchAddresses();
+
+  const token =
+    localStorage.getItem("token");
+
+  if (token) {
+    fetchAddresses();
+  }
+
   fetchCoupons();
+
 }, []);
 
 useEffect(() => {
@@ -62,6 +72,7 @@ useEffect(() => {
           item.quantity,
       0
     );
+
 
   setFinalAmount(total);
 }, [cartItems]);
@@ -270,12 +281,29 @@ if (!res) {
         }
       );
 
+      if (response.status === 401) {
+  navigate("/register");
+  return;
+}
+
       const data = await response.json();
 
       if (!data.success) {
-        alert(data.message);
-        return;
-      }
+
+  if (
+    data.message === "Invalid Token" ||
+    data.message === "Access Denied" ||
+    data.message === "No Token Provided"
+  ) {
+
+     navigate("/register");
+
+    return;
+  }
+
+  alert(data.message);
+  return;
+}
       const options = {
   key:
     import.meta.env.VITE_RAZORPAY_KEY_ID,

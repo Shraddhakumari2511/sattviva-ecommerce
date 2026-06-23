@@ -26,7 +26,7 @@ export const CartProvider = ({ children }) => {
       if (!token) return;
 
       const response = await fetch(
-        "http://localhost:5000/api/cart",
+        "http://sattviva-ecommerce.onrender.com/api/cart",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ export const CartProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     await fetch(
-      `http://localhost:5000/api/cart/remove/${variantId}`,
+      `http://sattviva-ecommerce.onrender.com/api/cart/remove/${variantId}`,
       {
         method: "DELETE",
         headers: {
@@ -123,7 +123,7 @@ export const CartProvider = ({ children }) => {
       const token = localStorage.getItem("token");
 
       await fetch(
-        "http://localhost:5000/api/cart/update",
+        "http://sattviva-ecommerce.onrender.com/api/cart/update",
         {
           method: "PUT",
           headers: {

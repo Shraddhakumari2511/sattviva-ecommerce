@@ -118,7 +118,7 @@ const fetchAddresses = async () => {
     );
 
     const response = await fetch(
-      "http://localhost:5000/api/addresses",
+      "http://sattviva-ecommerce.onrender.com/api/addresses",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -166,7 +166,7 @@ const fetchAddresses = async () => {
 const fetchCoupons = async () => {
   try {
     const response = await fetch(
-      "http://localhost:5000/api/coupons"
+      "http://sattviva-ecommerce.onrender.com/api/coupons"
     );
 
     const data = await response.json();
@@ -193,7 +193,7 @@ const applyCoupon = async () => {
 setFinalAmount(total);
 
     const response = await fetch(
-      "http://localhost:5000/api/coupons/apply",
+      "http://sattviva-ecommerce.onrender.com/api/coupons/apply",
       {
         method: "POST",
 
@@ -267,7 +267,7 @@ if (!res) {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5000/api/orders/create-razorpay-order",
+        "http://sattviva-ecommerce.onrender.com/api/orders/create-razorpay-order",
         {
           method: "POST",
           headers: {
@@ -330,7 +330,7 @@ if (!res) {
 
     const orderResponse =
       await fetch(
-        "http://localhost:5000/api/orders",
+        "http://sattviva-ecommerce.onrender.com/api/orders",
         {
           method: "POST",
 

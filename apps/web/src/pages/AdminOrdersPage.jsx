@@ -10,7 +10,7 @@ const AdminOrdersPage = () => {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5000/api/orders",
+        "http://sattviva-ecommerce.onrender.com/api/orders",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ setStats({
       localStorage.getItem("token");
 
     const response = await fetch(
-      `http://localhost:5000/api/orders/${orderId}/status`,
+      `http://sattviva-ecommerce.onrender.com/api/orders/${orderId}/status`,
       {
         method: "PUT",
         headers: {
@@ -98,7 +98,7 @@ const updateTracking = async (
       localStorage.getItem("token");
 
     const response = await fetch(
-      `http://localhost:5000/api/orders/${orderId}/tracking`,
+      `http://sattviva-ecommerce.onrender.com/api/orders/${orderId}/tracking`,
       {
         method: "PUT",
         headers: {

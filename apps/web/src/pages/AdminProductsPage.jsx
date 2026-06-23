@@ -27,7 +27,7 @@ const [uploading, setUploading] = useState(false);
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/products"
+        "http://sattviva-ecommerce.onrender.com/api/products"
       );
 
       const data = await response.json();
@@ -47,8 +47,8 @@ const [uploading, setUploading] = useState(false);
     const token = localStorage.getItem("token");
 
 const url = editingId
-  ? `http://localhost:5000/api/products/${editingId}`
-  : "http://localhost:5000/api/products";
+  ? `http:///sattviva-ecommerce.onrender.comapi/products/${editingId}`
+  : "http://sattviva-ecommerce.onrender.com/api/products";
 
 const method = editingId
   ? "PUT"
@@ -108,7 +108,7 @@ setFormData({
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      `http://localhost:5000/api/products/${id}`,
+      `http://sattviva-ecommerce.onrender.com/api/products/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -148,7 +148,7 @@ const uploadImages = async (
 
       const response =
         await fetch(
-          "http://localhost:5000/api/upload",
+          "http://sattviva-ecommerce.onrender.com/api/upload",
           {
             method: "POST",
             body: imageData,
@@ -203,7 +203,7 @@ const uploadUseImage = async (
 
     const response =
       await fetch(
-        "http://localhost:5000/api/upload",
+        "http://sattviva-ecommerce.onrender.com/api/upload",
         {
           method: "POST",
           body: imageData,

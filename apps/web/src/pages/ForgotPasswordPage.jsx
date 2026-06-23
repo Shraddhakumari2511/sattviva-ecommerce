@@ -11,7 +11,7 @@ const ForgotPasswordPage = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/forgot-password",
+        "http://sattviva-ecommerce.onrender.com/api/auth/forgot-password",
         {
           method: "POST",
           headers: {

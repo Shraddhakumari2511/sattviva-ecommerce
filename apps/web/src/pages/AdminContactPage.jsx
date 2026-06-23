@@ -17,7 +17,7 @@ const AdminContactPage = () => {
 
       const response =
         await fetch(
-          "http://localhost:5000/api/contact/admin"
+          "http://sattviva-ecommerce.onrender.com/api/contact/admin"
         );
 
       const data =
@@ -43,7 +43,7 @@ const AdminContactPage = () => {
 
     const response =
       await fetch(
-        `http://localhost:5000/api/contact/${id}`,
+        `http://sattviva-ecommerce.onrender.com/api/contact/${id}`,
         {
           method: "PUT",
 
@@ -94,7 +94,7 @@ const handleDelete = async (
 
     const response =
       await fetch(
-        `http://localhost:5000/api/contact/${id}`,
+        `http://sattviva-ecommerce.onrender.com/api/contact/${id}`,
         {
           method: "DELETE",
         }

@@ -1,139 +1,145 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://sattviva-ecommerce.onrender.com/api";
 const ECOMMERCE_STORE_ID = "store_01KSAXA7KN4HBC64NR48B90B3C";
 
 export const formatCurrency = (priceInCents, currencyInfo) => {
-  if (!currencyInfo || priceInCents === null || priceInCents === undefined) {
-    return "";
-  } 
+    if (!currencyInfo || priceInCents === null || priceInCents === undefined) {
+        return "";
+    }
 
-  const { code, symbol, template } = currencyInfo;
-  const currencyDisplay = symbol || code || "€";
-  const amount = (priceInCents / 100).toFixed(2);
+    const { code, symbol, template } = currencyInfo;
+    const currencyDisplay = symbol || code || "€";
+    const amount = (priceInCents / 100).toFixed(2);
 
-  if (template) {
-    return template.replace("$1", amount);
-  }
+    if (template) {
+        return template.replace("$1", amount);
+    }
 
-  return `${currencyDisplay}${amount}`;
+    return `${currencyDisplay}${amount}`;
 };
 
 const extractVariantOptions = (options) => {
-  return (options || []).map((opt) => ({
-    id: opt?.id || "",
-    option_id: opt?.option_id || "",
-    variant_id: opt?.variant_id || "",
-    value: opt?.value || "",
-  }));
+    return (options || []).map((opt) => ({
+        id: opt ? .id || "",
+        option_id: opt ? .option_id || "",
+        variant_id: opt ? .variant_id || "",
+        value: opt ? .value || "",
+    }));
 };
 
 const extractProductOptions = (options) => {
-  return (options || []).map((opt) => ({
-    id: opt?.id || "",
-    title: opt?.title || "",
-    values: (opt?.values || []).map((val) => ({
-      id: val?.id || "",
-      option_id: val?.option_id || "",
-      variant_id: val?.variant_id || "",
-      value: val?.value || "",
-    })),
-  }));
+    return (options || []).map((opt) => ({
+        id: opt ? .id || "",
+        title: opt ? .title || "",
+        values: (opt ? .values || []).map((val) => ({
+            id: val ? .id || "",
+            option_id: val ? .option_id || "",
+            variant_id: val ? .variant_id || "",
+            value: val ? .value || "",
+        })),
+    }));
 };
 
 const extractVariants = (variants) => {
-  return (variants || []).map((v) => {
-    const price_in_cents = v?.prices?.[0]?.amount || 0;
-    const sale_price_in_cents = v?.prices?.[0]?.sale_amount || null;
-    const currency = v?.prices?.[0]?.currency_code || "eur";
+    return (variants || []).map((v) => {
+        const price_in_cents = v ? .prices ? .[0] ? .amount || 0;
+        const sale_price_in_cents = v ? .prices ? .[0] ? .sale_amount || null;
+        const currency = v ? .prices ? .[0] ? .currency_code || "eur";
 
-    return {
-      id: v?.id || "",
-      title: v?.title || "",
-      image_url: v?.image_url || null,
-      sku: v?.sku || null,
-      price_in_cents,
-      sale_price_in_cents,
-      currency,
-      currency_info: v?.prices?.[0]?.currency,
-      price_formatted: formatCurrency(price_in_cents, v?.prices?.[0]?.currency),
-      sale_price_formatted: formatCurrency(
-        sale_price_in_cents,
-        v?.prices?.[0]?.currency,
-      ),
-      manage_inventory: v?.manage_inventory || false, // track stock only if this flag is true
-      weight: v?.weight || null,
-      options: extractVariantOptions(v?.options),
-      inventory_quantity: v?.inventory_quantity || null,
-    };
-  });
+        return {
+            id: v ? .id || "",
+            title: v ? .title || "",
+            image_url: v ? .image_url || null,
+            sku: v ? .sku || null,
+            price_in_cents,
+            sale_price_in_cents,
+            currency,
+            currency_info: v ? .prices ? .[0] ? .currency,
+            price_formatted: formatCurrency(
+                price_in_cents,
+                v ? .prices ? .[0] ? .currency
+            ),
+            sale_price_formatted: formatCurrency(
+                sale_price_in_cents,
+                v ? .prices ? .[0] ? .currency
+            ),
+            manage_inventory: v ? .manage_inventory || false,
+            weight: v ? .weight || null,
+            options: extractVariantOptions(v ? .options),
+            inventory_quantity: v ? .inventory_quantity || null,
+        };
+    });
 };
 
 const extractImages = (images) => {
-  return (images || []).map((img) => ({
-    url: img?.url || "",
-    order: img?.order || 0,
-    type: img?.type || "",
-  }));
+    return (images || []).map((img) => ({
+        url: img ? .url || "",
+        order: img ? .order || 0,
+        type: img ? .type || "",
+    }));
 };
 
 const extractCollections = (collections) => {
-  return (collections || []).map((col) => ({
-    product_id: col?.product_id || "",
-    collection_id: col?.collection_id || "",
-    order: col?.order || 0,
-  }));
+    return (collections || []).map((col) => ({
+        product_id: col ? .product_id || "",
+        collection_id: col ? .collection_id || "",
+        order: col ? .order || 0,
+    }));
 };
 
 const extractAdditionalInfo = (additionalInfo) => {
-  return (additionalInfo || []).map((info) => ({
-    id: info?.id || "",
-    order: info?.order || 0,
-    title: info?.title || "",
-    description: info?.description || "",
-  }));
+    return (additionalInfo || []).map((info) => ({
+        id: info ? .id || "",
+        order: info ? .order || 0,
+        title: info ? .title || "",
+        description: info ? .description || "",
+    }));
 };
 
 const extractCustomFields = (customFields) => {
-  return (customFields || []).map((field) => ({
-    id: field?.id || "",
-    title: field?.title || "",
-    is_required: field?.is_required || false,
-  }));
+    return (customFields || []).map((field) => ({
+        id: field ? .id || "",
+        title: field ? .title || "",
+        is_required: field ? .is_required || false,
+    }));
 };
 
 const extractRelatedProducts = (relatedProducts) => {
-  return (relatedProducts || []).map((rel) => ({
-    id: rel?.id || "",
-    section_title: rel?.section_title || "",
-    related_type: rel?.related_type || "",
-    related_id: rel?.related_id || "",
-    position: rel?.position || 0,
-  }));
+    return (relatedProducts || []).map((rel) => ({
+        id: rel ? .id || "",
+        section_title: rel ? .section_title || "",
+        related_type: rel ? .related_type || "",
+        related_id: rel ? .related_id || "",
+        position: rel ? .position || 0,
+    }));
 };
 
 const getLowestPriceVariant = (product) =>
-  product.variants.reduce((acc, curr) => {
-    const accPrice = acc.prices[0]?.sale_amount || acc.prices[0]?.amount || 0;
-    const currPrice =
-      curr.prices[0]?.sale_amount || curr.prices[0]?.amount || 0;
+    product.variants.reduce((acc, curr) => {
+        const accPrice =
+            acc.prices[0] ? .sale_amount || acc.prices[0] ? .amount || 0;
 
-    return accPrice < currPrice ? acc : curr;
-  });
+        const currPrice =
+            curr.prices[0] ? .sale_amount || curr.prices[0] ? .amount || 0;
+
+        return accPrice < currPrice ? acc : curr;
+    });
 
 const getProductPrice = (product) => {
-  const selectedVariant =
-    product.site_product_selection === "lowest_price_first" ||
-    product.site_product_selection === null
-      ? getLowestPriceVariant(product)
-      : product.variants[0];
+    const selectedVariant =
+        product.site_product_selection === "lowest_price_first" ||
+        product.site_product_selection === null ?
+        getLowestPriceVariant(product) :
+        product.variants[0];
 
-  const price_in_cents =
-    selectedVariant?.prices[0]?.sale_amount ||
-    selectedVariant?.prices[0]?.amount ||
-    0;
-  const currency = selectedVariant?.prices[0]?.currency_code || "eur";
+    const price_in_cents =
+        selectedVariant ? .prices ? .[0] ? .sale_amount ||
+        selectedVariant ? .prices ? .[0] ? .amount ||
+        0;
 
-  // price_in_cents is the price value in cents, make sure to convert it to a full price based on decimal_digits
-  return { price_in_cents, currency };
+    const currency =
+        selectedVariant ? .prices ? .[0] ? .currency_code || "eur";
+
+    return { price_in_cents, currency };
 };
 
 /**
@@ -355,48 +361,48 @@ const getProductPrice = (product) => {
  * @returns {Promise<GetProductsResponse>} Response object with paginated products
  */
 export async function getProducts({
-  ids,
-  offset,
-  limit,
-  order,
-  sort_by,
-  is_hidden,
-  to_date,
+    ids,
+    offset,
+    limit,
+    order,
+    sort_by,
+    is_hidden,
+    to_date,
 } = {}) {
-  const queryParams = new URLSearchParams();
+    const queryParams = new URLSearchParams();
 
-  if (ids) {
-    ids.forEach((id) => {
-      queryParams.append("ids[]", id);
-    });
-  }
+    if (ids) {
+        ids.forEach((id) => {
+            queryParams.append("ids[]", id);
+        });
+    }
 
-  if (offset) {
-    queryParams.append("offset", String(offset));
-  }
+    if (offset) {
+        queryParams.append("offset", String(offset));
+    }
 
-  if (limit) {
-    queryParams.append("limit", String(limit));
-  }
+    if (limit) {
+        queryParams.append("limit", String(limit));
+    }
 
-  if (order) {
-    queryParams.append("order", String(order).toUpperCase());
-  }
+    if (order) {
+        queryParams.append("order", String(order).toUpperCase());
+    }
 
-  if (sort_by) {
-    queryParams.append("sort_by", String(sort_by));
-  }
+    if (sort_by) {
+        queryParams.append("sort_by", String(sort_by));
+    }
 
-  if (is_hidden) {
-    queryParams.append("is_hidden", String(is_hidden));
-  }
+    if (is_hidden) {
+        queryParams.append("is_hidden", String(is_hidden));
+    }
 
-  if (to_date) {
-    queryParams.append("to_date", String(to_date));
-  }
+    if (to_date) {
+        queryParams.append("to_date", String(to_date));
+    }
 
-  const queryString = queryParams.toString();
-  const url = `${ECOMMERCE_API_URL}/store/${ECOMMERCE_STORE_ID}/products${queryString ? `?${queryString}` : ""}`;
+    const queryString = queryParams.toString();
+    const url = `${API_URL}/store/${ECOMMERCE_STORE_ID}/products${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url, {
     method: "GET",
@@ -473,7 +479,7 @@ export async function getProduct(id, { field } = {}) {
   }
 
   const queryString = queryParams.toString();
-  const url = `${ECOMMERCE_API_URL}/store/${ECOMMERCE_STORE_ID}/products/${id}${queryString ? `?${queryString}` : ""}`;
+  const url = `${API_URL}/store/${ECOMMERCE_STORE_ID}/products/${id}${queryString ? `?${queryString}` : ""}`;
 
   const response = await fetch(url, {
     method: "GET",
@@ -551,7 +557,7 @@ export async function getProductQuantities({ fields, product_ids }) {
     queryParams.append("product_ids[]", id);
   });
 
-  const url = `${ECOMMERCE_API_URL}/store/${ECOMMERCE_STORE_ID}/variants?${queryParams.toString()}`;
+  const url = `${API_URL}/store/${ECOMMERCE_STORE_ID}/variants?${queryParams.toString()}`;
 
   const response = await fetch(url, {
     method: "GET",
@@ -590,7 +596,7 @@ export async function getProductQuantities({ fields, product_ids }) {
  * // Use categories to filter products by checking product.collections[].collection_id
  */
 export async function getCategories() {
-  const url = `${ECOMMERCE_API_URL}/store/${ECOMMERCE_STORE_ID}/collections`;
+  const url = `${API_URL}/store/${ECOMMERCE_STORE_ID}/collections`;
 
   const response = await fetch(url, {
     method: "GET",
@@ -622,7 +628,7 @@ export async function getCategories() {
 
 async function getCheckoutLanguage() {
   const response = await fetch(
-    `${ECOMMERCE_API_URL}/store/${ECOMMERCE_STORE_ID}/settings`,
+    `${API_URL}/store/${ECOMMERCE_STORE_ID}/settings`,
     {
       method: "GET",
       headers: {
@@ -689,7 +695,7 @@ export async function initializeCheckout({
   locale,
   customer,
 }) {
-  const url = `${ECOMMERCE_API_URL}/store/${ECOMMERCE_STORE_ID}/checkout`;
+  const url = `${API_URL}/store/${ECOMMERCE_STORE_ID}/checkout`;
 
   const checkoutInitPromise = fetch(url, {
     method: "POST",

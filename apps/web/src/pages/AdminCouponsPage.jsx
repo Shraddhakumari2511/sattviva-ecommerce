@@ -39,7 +39,7 @@ const AdminCouponsPage = () => {
 
     const response =
       await fetch(
-        `http://localhost:5000/api/coupons/${id}`,
+        `http://sattviva-ecommerce.onrender.com/api/coupons/${id}`,
         {
           method: "DELETE",
 
@@ -111,7 +111,7 @@ const handleToggleVisible = async (
 
     const response =
       await fetch(
-        `http://localhost:5000/api/coupons/${coupon._id}`,
+        `http://sattviva-ecommerce.onrender.com/api/coupons/${coupon._id}`,
         {
           method: "PUT",
 
@@ -158,7 +158,7 @@ const handleToggleActive = async (
 
     const response =
       await fetch(
-        `http://localhost:5000/api/coupons/${coupon._id}`,
+        `http://sattviva-ecommerce.onrender.com/api/coupons/${coupon._id}`,
         {
           method: "PUT",
 
@@ -202,7 +202,7 @@ const handleToggleActive = async (
 
       const response =
         await fetch(
-          "http://localhost:5000/api/coupons/admin",
+          "http://sattviva-ecommerce.onrender.com/api/coupons/admin",
           {
             headers: {
               Authorization:
@@ -235,8 +235,8 @@ const handleToggleActive = async (
     );
 
     const url = editingCouponId
-      ? `http://localhost:5000/api/coupons/${editingCouponId}`
-      : "http://localhost:5000/api/coupons";
+      ? `http://sattviva-ecommerce.onrender.com/api/coupons/${editingCouponId}`
+      : "http://sattviva-ecommerce.onrender.com/api/coupons";
 
     const method = editingCouponId
       ? "PUT"

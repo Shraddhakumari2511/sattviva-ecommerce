@@ -35,7 +35,7 @@ const [formData, setFormData] =
         localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5000/api/addresses",
+        "http://sattviva-ecommerce.onrender.com/api/addresses",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,8 +73,8 @@ const handleSubmit = async (e) => {
     const token = localStorage.getItem("token");
 
     const url = editingId
-      ? `http://localhost:5000/api/addresses/${editingId}`
-      : "http://localhost:5000/api/addresses";
+      ? `http://sattviva-ecommerce.onrender.com/api/addresses/${editingId}`
+      : "http://sattviva-ecommerce.onrender.com/api/addresses";
 
     const method = editingId
       ? "PUT"
@@ -126,7 +126,7 @@ const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      `http://localhost:5000/api/addresses/${id}`,
+      `http://sattviva-ecommerce.onrender.com/api/addresses/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -155,7 +155,7 @@ const handleDefault =
 
       const response =
         await fetch(
-          `http://localhost:5000/api/addresses/${id}/default`,
+          `http://sattviva-ecommerce.onrender.com/api/addresses/${id}/default`,
           {
             method: "PUT",
 

@@ -37,7 +37,7 @@ function ProductDetailPage() {
 
 
 await fetch(
-  "http://localhost:5000/api/cart/add",
+  "http://sattviva-ecommerce.onrender.com/api/cart/add",
   {
     method: "POST",
     headers: {
@@ -104,7 +104,7 @@ useEffect(() => {
       setLoading(true);
 
       const response = await fetch(
-        `http://localhost:5000/api/products/${id}`
+        `http://sattviva-ecommerce.onrender.com/api/products/${id}`
       );
 
       const data = await response.json();
@@ -113,7 +113,7 @@ useEffect(() => {
 
       const productsResponse =
   await fetch(
-    "http://localhost:5000/api/products"
+    "http://sattviva-ecommerce.onrender.com/api/products"
   );
 
 const productsData =

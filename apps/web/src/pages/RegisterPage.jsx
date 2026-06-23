@@ -37,7 +37,7 @@ const [emailForOtp, setEmailForOtp] = useState("");
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/register",
+        "http://sattviva-ecommerce.onrender.com/api/auth/register",
         {
           method: "POST",
           headers: {
@@ -67,7 +67,7 @@ setShowOtpInput(true);
   const handleVerifyOtp = async () => {
   try {
     const response = await fetch(
-      "http://localhost:5000/api/auth/verify-otp",
+      "http://sattviva-ecommerce.onrender.com/api/auth/verify-otp",
       {
         method: "POST",
 
@@ -104,7 +104,7 @@ setShowOtpInput(true);
 const handleResendOtp = async () => {
   try {
     const response = await fetch(
-      "http://localhost:5000/api/auth/resend-otp",
+      "http://sattviva-ecommerce.onrender.com/api/auth/resend-otp",
       {
         method: "POST",
 

@@ -21,7 +21,7 @@ const ContactPage = () => {
 
     const response =
 await fetch(
-"http://localhost:5000/api/contact",
+"http://sattviva-ecommerce.onrender.com/api/contact",
 {
 method: "POST",
 

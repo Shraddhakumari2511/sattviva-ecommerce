@@ -64,7 +64,7 @@ useEffect(() => {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/products"
+        "http://sattviva-ecommerce.onrender.com/api/products"
       );
 
       const data = await response.json();
@@ -186,7 +186,7 @@ return filtered;
 const token = localStorage.getItem("token");
 
 await fetch(
-  "http://localhost:5000/api/cart/add",
+  "http://sattviva-ecommerce.onrender.com/api/cart/add",
   {
     method: "POST",
     headers: {

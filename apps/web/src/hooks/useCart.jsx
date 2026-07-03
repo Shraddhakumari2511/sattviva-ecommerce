@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
-import { formatCurrency } from '@/api/EcommerceApi';
+const API = import.meta.env.VITE_API_URL;
+
 
 const CartContext = createContext();
 
@@ -26,7 +27,7 @@ export const CartProvider = ({ children }) => {
       if (!token) return;
 
       const response = await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/cart",
+        `${API}/cart`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -98,7 +99,7 @@ export const CartProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     await fetch(
-      `http://sattviva-ecommerce.onrender.com/api/cart/remove/${variantId}`,
+      `${API}/cart/remove/${variantId}`,
       {
         method: "DELETE",
         headers: {
@@ -123,7 +124,7 @@ export const CartProvider = ({ children }) => {
       const token = localStorage.getItem("token");
 
       await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/cart/update",
+        `${API}/cart/update`,
         {
           method: "PUT",
           headers: {

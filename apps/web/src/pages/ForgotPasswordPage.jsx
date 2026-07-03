@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+const API = import.meta.env.VITE_API_URL;
+
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ const ForgotPasswordPage = () => {
 
     try {
       const response = await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/auth/forgot-password",
+        `${API}/auth/forgot-password`,
         {
           method: "POST",
           headers: {

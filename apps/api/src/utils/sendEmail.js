@@ -10,15 +10,13 @@ console.log("EMAIL_PORT =", process.env.EMAIL_PORT);
 
 
 
+
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: 465,
-  secure: true,
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  
 });
 
 transporter.verify((error, success) => {

@@ -27,7 +27,7 @@ const CertificationSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-green-950 via-green-900 to-green-800 text-white">
+    <section className="py-2 bg-gradient-to-b from-green-800 via-green-800 to-green-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -36,9 +36,9 @@ const CertificationSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="heading-font text-4xl md:text-5xl font-bold mb-4 text-balance">
+          <h3 className="heading-font text-4xl md:text-4xl font-bold mb-4 text-balance">
             Certified Excellence
-          </h2>
+          </h3>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
             Our commitment to quality is backed by recognized certifications
           </p>
@@ -57,7 +57,7 @@ const CertificationSection = () => {
                 className="text-center"
               >
                 <div className="bg-white/10 border border-green-300/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Icon className="h-10 w-10 text-green-300" />
+                  <Icon className="h-10 w-10 text-green-600" />
                 </div>
                 <h3 className="heading-font text-xl font-semibold mb-3">
                   {cert.title}

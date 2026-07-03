@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+
+const API = import.meta.env.VITE_API_URL;
+
 const RegisterPage = () => {
   const navigate = useNavigate();
 
@@ -37,7 +40,7 @@ const [emailForOtp, setEmailForOtp] = useState("");
 
     try {
       const response = await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/auth/register",
+        `${API}/auth/register`,
         {
           method: "POST",
           headers: {
@@ -67,7 +70,7 @@ setShowOtpInput(true);
   const handleVerifyOtp = async () => {
   try {
     const response = await fetch(
-      "http://sattviva-ecommerce.onrender.com/api/auth/verify-otp",
+      `${API}/auth/verify-otp`,
       {
         method: "POST",
 
@@ -104,7 +107,7 @@ setShowOtpInput(true);
 const handleResendOtp = async () => {
   try {
     const response = await fetch(
-      "http://sattviva-ecommerce.onrender.com/api/auth/resend-otp",
+      `${API}/auth/resend-otp`,
       {
         method: "POST",
 

@@ -45,7 +45,7 @@ const OurStoryPage = () => {
       </Helmet>
 
       <div className="bg-background">
-        <div className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="relative h-[30vh] flex items-center justify-center overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1641897434555-720ccf02fe35?w=1920&h=1080&fit=crop"
             alt="Traditional village scene representing our heritage"

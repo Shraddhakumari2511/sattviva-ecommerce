@@ -21,9 +21,10 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const API = import.meta.env.VITE_API_URL;
     try {
       const response = await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/auth/login",
+        `${API}/auth/login`,
         {
           method: "POST",
           headers: {
@@ -36,13 +37,11 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (!data.success) {
-        alert(data.message);
         return;
       }
 
       login(data.user, data.token);
 
-      alert("Login Successful");
 
       navigate("/");
     } catch (error) {

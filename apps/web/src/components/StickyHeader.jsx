@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef,} from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Menu, User,ChevronDown, Package, MapPin, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +31,56 @@ const AnnouncementStrip = () => {
 };
 
 const StickyHeader = ({ onMenuClick, onCartOpen }) => {
+  const navigate = useNavigate();
+
+const [search, setSearch] = useState("");
+
+const products = [
+  {
+    id: 1,
+    name: "Wood Pressed Mustard Oil",
+    url: "/products/wood-press-oil",
+  },
+  {
+    id: 2,
+    name: "Cold Pressed Groundnut Oil",
+    url: "/products/cold-press-oil",
+  },
+  {
+    id: 3,
+    name: "Cold Pressed Coconut Oil",
+    url: "/products/cold-press-oil",
+  },
+  {
+    id: 4,
+    name: "Wood Pressed Sesame Oil",
+    url: "/products/wood-press-oil",
+  },
+  {
+    id: 5,
+    name: "A2 Desi Ghee",
+    url: "/products/ghee",
+  },
+  {
+    id: 6,
+    name: "Turmeric Powder",
+    url: "/products/spices",
+  },
+  {
+    id: 7,
+    name: "Black Pepper",
+    url: "/products/spices",
+  },
+  {
+    id: 8,
+    name: "Dry Fruits",
+    url: "/products/dry-fruits",
+  }
+];
+
+const filteredProducts = products.filter((product) =>
+  product.name.toLowerCase().includes(search.toLowerCase())
+);
   const { cartItems } = useCart();
  
   
@@ -44,10 +94,25 @@ const firstName =
 
   const dropdownRef = useRef(null);
 
+ 
+useEffect(() => {
+  setShowDropdown(false);
+}, [user]);
+
+  useEffect(() => {
+  console.log("Dropdown:", showDropdown);
+}, [showDropdown]);
+
+
+
 const handleLogout = () => {
   logout();
-  toast.success("Logged out successfully");
+  
 };
+
+useEffect(() => {
+  setShowDropdown(false);
+}, [user]);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
@@ -95,11 +160,55 @@ const handleLogout = () => {
         {/* Search Bar */}
         <div className="flex-1 max-w-md hidden sm:flex relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input 
-            type="text" 
-            placeholder="Search products, oils, spices..." 
-            className="pl-10 bg-card border-border focus-visible:ring-secondary rounded-full h-10 text-sm"
-          />
+          <Input
+  type="text"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  placeholder="Search products, oils, spices..."
+  className="pl-10 bg-card border-border focus-visible:ring-secondary rounded-full h-10 text-sm"
+/>
+
+{search.length > 0 && (
+  <div className="absolute top-12 left-0 right-0 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50">
+
+    {filteredProducts.length > 0 ? (
+
+      filteredProducts.map((product) => (
+
+        <div
+          key={product.id}
+          onClick={() => {
+            navigate(product.url);
+            setSearch("");
+          }}
+          className="px-4 py-3 hover:bg-green-50 cursor-pointer border-b last:border-b-0 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+
+            <Search
+              size={16}
+              className="text-green-700"
+            />
+
+            <span className="text-sm text-gray-700">
+              {product.name}
+            </span>
+
+          </div>
+        </div>
+
+      ))
+
+    ) : (
+
+      <div className="px-4 py-3 text-gray-500 text-sm">
+        No Products Found
+      </div>
+
+    )}
+
+  </div>
+)}
         </div>
 
         {/* Right Actions */}
@@ -130,9 +239,11 @@ const handleLogout = () => {
   {user ? (
     <div ref={dropdownRef} className="relative hidden lg:block">
       <button
-        onClick={() =>
-          setShowDropdown(!showDropdown)
-        }
+      type="button"
+        onClick={(e) => {
+  e.stopPropagation();
+  setShowDropdown(prev => !prev);
+}}
         className="flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card hover:bg-muted shadow-sm transition"
       >
         <User size={18} />
@@ -195,7 +306,7 @@ const handleLogout = () => {
   ) : (
     <Link
       to="/login"
-      className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-secondary transition-colors"
+      className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-secondary transition-colors"
     >
       <User size={18} />
       <span>Login / Signup</span>

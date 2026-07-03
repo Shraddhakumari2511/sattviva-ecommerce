@@ -44,7 +44,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-green-950 via-green-900 to-green-800 text-white pt-20 pb-10 border-t-4 border-green-400">
+    <footer className="bg-gradient-to-b from-green-800 via-green-800 to-green-800 text-white pt-20]\ pb-10 border-t-4 border-green-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
           
@@ -93,15 +93,15 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-primary-foreground/80 font-light text-sm">
                 <Phone size={18} className="text-green-300 shrink-0 mt-0.5" />
-                <span>+91 98765 43210<br/><span className="text-xs opacity-70">Mon-Fri, 10AM-6PM</span></span>
+                <span>+91 84483 49300<br/><span className="text-xs opacity-70">Mon-Fri, 10AM-6PM</span></span>
               </li>
               <li className="flex items-start gap-3 text-primary-foreground/80 font-light text-sm">
                 <Mail size={18} className="text-secondary shrink-0 mt-0.5" />
-                <span>hello@sattvivanaturals.com</span>
+                <span>contact@sattvivanaturals.com</span>
               </li>
               <li className="flex items-start gap-3 text-primary-foreground/80 font-light text-sm">
                 <MapPin size={18} className="text-green-300 shrink-0 mt-0.5" />
-                <span className="leading-relaxed">123 Heritage Lane, Organic Valley, Mumbai 400001</span>
+                <span className="leading-relaxed">Plot No. S9, Panki Site 3 Industrial Area, Kanpur, Uttar Pradesh - 208022</span>
               </li>
             </ul>
           </div>

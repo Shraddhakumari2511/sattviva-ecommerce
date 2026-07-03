@@ -2,6 +2,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+const API = import.meta.env.VITE_API_URL;
 
 const AdminCouponsPage = () => {
   const [coupons, setCoupons] =
@@ -39,7 +40,7 @@ const AdminCouponsPage = () => {
 
     const response =
       await fetch(
-        `http://sattviva-ecommerce.onrender.com/api/coupons/${id}`,
+        `${API}/coupons/${id}`,
         {
           method: "DELETE",
 
@@ -111,7 +112,7 @@ const handleToggleVisible = async (
 
     const response =
       await fetch(
-        `http://sattviva-ecommerce.onrender.com/api/coupons/${coupon._id}`,
+        `${API}/coupons/${coupon._id}`,
         {
           method: "PUT",
 
@@ -158,7 +159,7 @@ const handleToggleActive = async (
 
     const response =
       await fetch(
-        `http://sattviva-ecommerce.onrender.com/api/coupons/${coupon._id}`,
+        `${API}/coupons/${coupon._id}`,
         {
           method: "PUT",
 
@@ -202,7 +203,7 @@ const handleToggleActive = async (
 
       const response =
         await fetch(
-          "http://sattviva-ecommerce.onrender.com/api/coupons/admin",
+          `${API}/coupons/admin`,
           {
             headers: {
               Authorization:
@@ -235,9 +236,9 @@ const handleToggleActive = async (
     );
 
     const url = editingCouponId
-      ? `http://sattviva-ecommerce.onrender.com/api/coupons/${editingCouponId}`
-      : "http://sattviva-ecommerce.onrender.com/api/coupons";
-
+      ? 
+      `${API}/coupons/${editingCouponId}`
+      : `${API}/coupons`
     const method = editingCouponId
       ? "PUT"
       : "POST";

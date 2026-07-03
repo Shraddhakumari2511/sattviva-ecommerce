@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+const API = import.meta.env.VITE_API_URL;
+
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ const ResetPasswordPage = () => {
 
     try {
       const response = await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/auth/reset-password",
+        `${API}/auth/reset-password`,
         {
           method: "POST",
           headers: {

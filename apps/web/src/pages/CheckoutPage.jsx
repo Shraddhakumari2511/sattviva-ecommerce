@@ -1,6 +1,8 @@
 import React, {useState,useEffect,} from "react";
 import { useCart } from "@/hooks/useCart";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+const API = import.meta.env.VITE_API_URL;
 
 
 
@@ -12,17 +14,25 @@ const CheckoutPage = () => {
   );
 
 
+const location = useLocation();
 
+const buyNowItem =
+  location.state?.buyNowItem;
 
   const [addresses, setAddresses] = useState([]);
     
   const { cartItems, getCartTotal, clearCart } = useCart();
+
+  const checkoutItems =
+  buyNowItem
+    ? [buyNowItem]
+    : cartItems;
   const navigate = useNavigate();
 
   const [visibleCoupons, setVisibleCoupons] =
   useState([]);
 
-  if (cartItems.length === 0) {
+  if (checkoutItems.length === 0) {
   return (
     <div className="min-h-[70vh] flex items-center justify-center">
       <h1 className="text-2xl font-bold">
@@ -32,14 +42,16 @@ const CheckoutPage = () => {
   );
 }
 
-  const [shippingAddress, setShippingAddress] = useState({
-    fullName: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    pincode: "",
-  });
+ const [shippingAddress, setShippingAddress] = useState({
+  fullName: "",
+  email: "",
+  phone: "",
+  address: "",
+  city: "",
+  state: "",
+  pincode: "",
+});
+
 
   const [couponCode, setCouponCode] =
   useState("");
@@ -65,7 +77,7 @@ const [finalAmount, setFinalAmount] =
 
 useEffect(() => {
   const total =
-    cartItems.reduce(
+    checkoutItems.reduce(
       (sum, item) =>
         sum +
         item.product.price *
@@ -75,7 +87,7 @@ useEffect(() => {
 
 
   setFinalAmount(total);
-}, [cartItems]);
+}, [checkoutItems]);
 
 useEffect(() => {
   const handleStorageChange = () => {
@@ -118,7 +130,7 @@ const fetchAddresses = async () => {
     );
 
     const response = await fetch(
-      "http://sattviva-ecommerce.onrender.com/api/addresses",
+      `${API}/addresses`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -141,6 +153,7 @@ const fetchAddresses = async () => {
           fullName:
             defaultAddress.fullName,
 
+            email: defaultAddress.email,
           phone:
             defaultAddress.phone,
 
@@ -166,7 +179,7 @@ const fetchAddresses = async () => {
 const fetchCoupons = async () => {
   try {
     const response = await fetch(
-      "http://sattviva-ecommerce.onrender.com/api/coupons"
+      `${API}/coupons`,
     );
 
     const data = await response.json();
@@ -183,7 +196,7 @@ const fetchCoupons = async () => {
 
 const applyCoupon = async () => {
   try {
-    const total = cartItems.reduce(
+    const total = checkoutItems.reduce(
   (sum, item) =>
     sum +
     item.product.price * item.quantity,
@@ -193,7 +206,7 @@ const applyCoupon = async () => {
 setFinalAmount(total);
 
     const response = await fetch(
-      "http://sattviva-ecommerce.onrender.com/api/coupons/apply",
+      `${API}/coupons/apply`,
       {
         method: "POST",
 
@@ -242,12 +255,13 @@ if (!res) {
 
     if (
   !shippingAddress.fullName ||
+  !shippingAddress.email ||
   !shippingAddress.phone ||
   !shippingAddress.address ||
   !shippingAddress.city ||
   !shippingAddress.state ||
   !shippingAddress.pincode
-) {
+){
   alert("Please fill all fields");
   return;
 }
@@ -267,7 +281,7 @@ if (!res) {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/orders/create-razorpay-order",
+        `${API}/orders/create-razorpay-order`,
         {
           method: "POST",
           headers: {
@@ -326,11 +340,14 @@ if (!res) {
   handler: async function (
     response
   ) {
+    alert("HANDLER CALLED");
+     console.log("HANDLER CALLED");
+
     console.log(response);
 
     const orderResponse =
       await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/orders",
+        `${API}/orders`,
         {
           method: "POST",
 
@@ -380,6 +397,10 @@ modal: {
   ondismiss: function () {
     console.log("Popup closed");
   },
+
+  escape: false,
+
+  backdropclose: false,
 },
 
   theme: {
@@ -395,7 +416,16 @@ const razorpay =
     options
 
   );
-  
+
+  razorpay.on("payment.submit", function (response) {
+  console.log("PAYMENT SUBMITTED");
+  console.log(response);
+});
+
+  razorpay.on("payment.failed", function (response) {
+  console.log("PAYMENT FAILED");
+  console.log(response.error);
+});
 razorpay.open();
 console.log("After Open");
 
@@ -438,6 +468,8 @@ console.log("After Open");
           fullName:
             address.fullName,
 
+          email: address.email,
+          
           phone:
             address.phone,
 
@@ -496,6 +528,19 @@ console.log("After Open");
               })
             }
           />
+
+          <input
+  type="email"
+  placeholder="Email"
+  value={shippingAddress.email}
+  onChange={(e) =>
+    setShippingAddress({
+      ...shippingAddress,
+      email: e.target.value,
+    })
+  }
+  className="w-full border rounded-lg p-3"
+/>
 
           <input
             placeholder="Phone Number"
@@ -569,7 +614,7 @@ console.log("After Open");
           </h2>
 
           <div className="space-y-4">
-            {cartItems.map((item) => (
+            {checkoutItems.map((item) => (
               <div
                 key={item.variant.id}
                 className="flex justify-between border-b pb-2"
@@ -672,7 +717,7 @@ console.log("After Open");
 
     <span>
       ₹{
-        cartItems.reduce(
+        checkoutItems.reduce(
           (sum, item) =>
             sum +
             item.product.price *

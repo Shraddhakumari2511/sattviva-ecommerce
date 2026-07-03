@@ -3,8 +3,7 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import Hero from '@/components/Hero.jsx';
 import TrustBar from '@/components/TrustBar.jsx';
-import CategoryCards from '@/components/CategoryCards.jsx';
-import ProductsList from '@/components/ProductsList.jsx';
+
 import WhyChooseUs from '@/components/WhyChooseUs.jsx';
 import ReviewsSlider from '@/components/ReviewsSlider.jsx';
 import CertificationSection from '@/components/CertificationSection.jsx';

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
 import { ShoppingCart, Loader2, ArrowLeft, CheckCircle, Minus, Plus, XCircle, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+const API = import.meta.env.VITE_API_URL;
 
 const placeholderImage = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzc0MTUxIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4K";
 
@@ -37,7 +38,7 @@ function ProductDetailPage() {
 
 
 await fetch(
-  "http://sattviva-ecommerce.onrender.com/api/cart/add",
+  `${API}/cart/add`,
   {
     method: "POST",
     headers: {
@@ -104,7 +105,7 @@ useEffect(() => {
       setLoading(true);
 
       const response = await fetch(
-        `http://sattviva-ecommerce.onrender.com/api/products/${id}`
+        `${API}/products/${id}`,
       );
 
       const data = await response.json();
@@ -113,7 +114,7 @@ useEffect(() => {
 
       const productsResponse =
   await fetch(
-    "http://sattviva-ecommerce.onrender.com/api/products"
+    `${API}/products`,
   );
 
 const productsData =
@@ -316,10 +317,21 @@ const currentImage =
                 <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>
 
-              <Button
+              
+ <Button
   onClick={() => {
-    handleAddToCart();
-    navigate("/checkout");
+    navigate("/checkout", {
+      state: {
+        buyNowItem: {
+          product: {
+            ...product,
+            image: product.images?.[0] || "/images/logo.png",
+          },
+          variant: selectedVariant,
+          quantity,
+        },
+      },
+    });
   }}
   size="lg"
   variant="outline"

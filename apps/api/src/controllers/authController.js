@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import sendEmail from "../utils/sendEmail.js";
 
 export const register = async (req, res) => {
+  console.time("register");
   try {
     const { name, email, password } = req.body;
 
@@ -137,6 +138,7 @@ www.sattvivanaturals.com
       },
     });
   } catch (error) {
+    console.timeEnd("Login");
   console.log("REGISTER ERROR:");
   console.log(error);
   console.log(error.stack);
@@ -148,11 +150,20 @@ www.sattvivanaturals.com
 }
 };
 
+
+
 export const login = async (req, res) => {
+
+  console.time("Login");
   try {
+
     const { email, password } = req.body;
 
+    console.log("Login email:", email);
+
     const user = await User.findOne({ email });
+
+    console.log("User found:", user);
 
     if (!user) {
       return res.status(400).json({
@@ -162,17 +173,18 @@ export const login = async (req, res) => {
     }
 
     if (!user.isVerified) {
-  return res.status(400).json({
-    success: false,
-    message:
-      "Please verify your email first",
-  });
-}
+      return res.status(400).json({
+        success: false,
+        message: "Please verify your email first",
+      });
+    }
 
     const isMatch = await bcrypt.compare(
       password,
       user.password
     );
+
+    console.log("Password Match:", isMatch);
 
     if (!isMatch) {
       return res.status(400).json({
@@ -192,7 +204,7 @@ export const login = async (req, res) => {
       }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Login successful",
       token,
@@ -203,13 +215,19 @@ export const login = async (req, res) => {
         role: user.role,
       },
     });
+
   } catch (error) {
-    res.status(500).json({
+    console.timeEnd("Login");
+    console.error("LOGIN ERROR:", error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
+
+
 
 export const verifyOtp = async (req, res) => {
   try {
@@ -313,7 +331,7 @@ export const resendOtp = async (
   email,
   "Welcome to SattViva Naturals - Verify Your Email",
   `
-Hello ${name},
+Hello ${user.name},
 
 Welcome to SattViva Naturals!
 

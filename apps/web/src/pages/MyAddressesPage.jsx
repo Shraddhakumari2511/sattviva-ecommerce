@@ -1,4 +1,5 @@
 import React, {useEffect, useState,} from "react";
+const API = import.meta.env.VITE_API_URL;
 
 const MyAddressesPage = () => {
 
@@ -35,7 +36,7 @@ const [formData, setFormData] =
         localStorage.getItem("token");
 
       const response = await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/addresses",
+        `${API}/addresses`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,9 +74,8 @@ const handleSubmit = async (e) => {
     const token = localStorage.getItem("token");
 
     const url = editingId
-      ? `http://sattviva-ecommerce.onrender.com/api/addresses/${editingId}`
-      : "http://sattviva-ecommerce.onrender.com/api/addresses";
-
+      ? `${API}/addresses/${editingId}`
+      : `${API}/addresses`
     const method = editingId
       ? "PUT"
       : "POST";
@@ -126,7 +126,7 @@ const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      `http://sattviva-ecommerce.onrender.com/api/addresses/${id}`,
+      `${API}/addresses/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -155,7 +155,7 @@ const handleDefault =
 
       const response =
         await fetch(
-          `http://sattviva-ecommerce.onrender.com/api/addresses/${id}/default`,
+          `${API}/addresses/${id}/default`,
           {
             method: "PUT",
 

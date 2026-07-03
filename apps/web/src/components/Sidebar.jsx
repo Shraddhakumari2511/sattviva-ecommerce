@@ -1,16 +1,24 @@
 import React from 'react';
+import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  Home, ShoppingBag, BookOpen, FileText, 
+  Home, ShoppingBag, BookOpen, FileText, User,
   Leaf, MessageSquare, HelpCircle, Phone,
   Instagram, Facebook, Youtube, MessageCircle, X, Truck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const { user, logout } = useAuth();
+
+  
+
+const handleLogout = () => {
+  logout();
+};
   const scrollToTop = () => {
     const container = document.getElementById("main-content");
   
@@ -45,7 +53,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* Sidebar Container */}
       <aside className={`
         fixed top-0 left-0 h-[100dvh] w-[280px] z-50
-        bg-gradient-to-b from-green-950 via-green-900 to-green-800 text-white
+        bg-gradient-to-b from-green-800 via-green-800 to-green-800 text-white
         shadow-2xl md:shadow-none
         transition-transform duration-300 ease-in-out flex flex-col
         ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
@@ -56,7 +64,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="absolute top-4 right-4 md:hidden text-primary-foreground hover:bg-primary-foreground/10"
+            className="absolute top-10 right-10 md:hidden text-primary-foreground hover:bg-primary-foreground/10"
             onClick={onClose}
           >
             <X size={20} />
@@ -71,7 +79,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   <img
     src="images/logo.png"
     alt="SattViva Logo"
-    className="w-32 mb-3 object-contain"
+    className="w-50  object-contain"
   />
 
   {/* Tagline */}
@@ -107,14 +115,34 @@ const Sidebar = ({ isOpen, onClose }) => {
   <span className="font-medium text-sm tracking-wide">
     Home
   </span>
+
 </Link>
+
+
 
 {/* Shop Dropdown */}
 
 {/*Oils Submenu*/}
-<div className="mb-2">
 <div
-  className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-primary-foreground/80 hover:bg-green-700/40"
+  className="mb-2"
+  onMouseEnter={() => setShopOpen(true)}
+  onMouseLeave={() => setShopOpen(false)}
+>
+<div
+  className="
+    group
+    flex items-center justify-between w-full px-4 py-3 rounded-xl
+    text-primary-foreground/80
+    cursor-pointer
+    transition-all duration-300
+    hover:bg-gradient-to-r
+    hover:from-green-700/40
+    hover:to-green-600/20
+    hover:text-green-300
+    hover:translate-x-1
+    hover:shadow-lg
+    hover:shadow-green-900/30
+  "
 >
 
 <Link
@@ -129,15 +157,18 @@ const Sidebar = ({ isOpen, onClose }) => {
       });
     }
   }}
-  className="flex items-center gap-4"
+  className="flex items-center gap-2"
 >
-  <ShoppingBag size={20} />
-  <span className="font-medium text-sm tracking-wide">
+<ShoppingBag
+  size={20}
+  className="transition-transform duration-300 group-hover:scale-110"
+/>
+<span className="font-medium text-sm tracking-wide transition-colors duration-300">
     Shop
   </span>
 </Link>
 
-<button onClick={() => setShopOpen(!shopOpen)}>
+<button type="button">
   {shopOpen ? (
     <ChevronDown size={16} />
   ) : (
@@ -146,29 +177,38 @@ const Sidebar = ({ isOpen, onClose }) => {
 </button>
   </div>
 
-  {shopOpen && (
-    <div className="ml-10 mt-2  border-green-700 pl-4 space-y-2">
-      <div>
-  <button
-    onClick={() => setOilsOpen(!oilsOpen)}
-    className="flex items-center justify-between w-full text-sm text-primary-foreground/70 hover:text-green-300"
-  >
-    <Link
-  to="/products/oils"
-  className="text-sm text-primary-foreground/70 hover:text-green-300"
+  <div
+  className={`mt-2 space-y-2 overflow-hidden transition-all duration-300 ${
+    shopOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+  }`}
 >
-  Oils
-</Link>
+    <div className="ml-10 mt-2  border-green-700 pl-4 space-y-2">
+    <div>
+  <div className="flex items-center justify-between">
 
-    {oilsOpen ? (
-      <ChevronDown size={14} />
-    ) : (
-      <ChevronRight size={14} />
-    )}
-  </button>
+    <Link
+      to="/products/oils"
+      className="block text-sm text-primary-foreground/70 hover:text-green-300"
+    >
+      Oils
+    </Link>
+
+    <button
+      onClick={() => setOilsOpen(!oilsOpen)}
+      className="text-primary-foreground/70 hover:text-green-300"
+    >
+      {oilsOpen ? (
+        <ChevronDown size={14} />
+      ) : (
+        <ChevronRight size={14} />
+      )}
+    </button>
+
+  </div>
 
   {oilsOpen && (
-    <div className="ml-6 mt-2  border-green-600 pl-3 space-y-2">
+    <div className="ml-6 mt-2 space-y-2">
+
       <Link
         to="/products/cold-press-oil"
         className="block text-sm text-primary-foreground/60 hover:text-green-300"
@@ -182,6 +222,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       >
         Wood Press Oil
       </Link>
+
     </div>
   )}
 </div>
@@ -265,7 +306,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         Health Punch
       </Link>
     </div>
-  )}
+    </div>
 </div>
 
 {/* Existing Menu Items */}
@@ -306,10 +347,75 @@ const Sidebar = ({ isOpen, onClose }) => {
 })}
 </nav>
 
+{/* Login / Profile
+
+{!user ? (
+  <Link
+    to="/login"
+    onClick={onClose}
+    className="flex items-center gap-4 px-4 py-3 rounded-xl text-primary-foreground/80 hover:bg-green-700/40"
+  >
+    <User size={10} />
+
+    <span className="font-medium text-sm">
+      Login / Signup
+    </span>
+  </Link>
+) : (
+  <>
+    <Link
+      to="/profile"
+      onClick={onClose}
+      className="flex items-center gap-4 px-4 py-3 rounded-xl text-primary-foreground/80 hover:bg-green-700/40"
+    >
+      <User size={20} />
+      <span className="font-medium text-sm">
+        My Profile
+      </span>
+    </Link>
+
+    <Link
+      to="/my-orders"
+      onClick={onClose}
+      className="flex items-center gap-4 px-4 py-3 rounded-xl text-primary-foreground/80 hover:bg-green-700/40"
+    >
+      <Package size={20} />
+      <span className="font-medium text-sm">
+        My Orders
+      </span>
+    </Link>
+
+    <Link
+      to="/addresses"
+      onClick={onClose}
+      className="flex items-center gap-4 px-4 py-3 rounded-xl text-primary-foreground/80 hover:bg-green-700/40"
+    >
+      <MapPin size={20} />
+      <span className="font-medium text-sm">
+        My Addresses
+      </span>
+    </Link>
+
+    <button
+      onClick={() => {
+        handleLogout();
+        onClose();
+      }}
+      className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-red-400 hover:bg-red-900/20"
+    >
+      <LogOut size={20} />
+
+      <span className="font-medium text-sm">
+        Logout
+      </span>
+    </button>
+  </>
+)} */}
+
         {/* Bottom Section */}
-        <div className="p-6 space-y-6 mt-auto bg-black/10 backdrop-blur-sm">
+        <div className="p-3 space-y-4 mt-auto bg-black/ backdrop-blur-sm">
           {/* Free Shipping Card */}
-          <div className="bg-primary-foreground/10 border border-secondary/30 rounded-xl p-4 flex items-start gap-3">
+          <div className="bg-primary-foreground/5 border border-secondary/10 rounded-xl p-2 flex items-start gap-1">
             <div className="bg-secondary/20 p-2 rounded-lg text-green-300">
               <Truck size={18} />
             </div>
@@ -324,9 +430,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             <p className="text-xs text-primary-foreground/60 uppercase tracking-wider font-semibold mb-2">Need Help?</p>
             <a href="tel:+919876543210" className="text-green-300 font-medium hover:underline flex items-center justify-center gap-2">
               <Phone size={14} />
-              +91 98765 43210
+              +91 84483 49300
             </a>
-            <p className="text-xs text-primary-foreground/50">Mon-Fri, 10AM-6PM IST</p>
+            <p className="text-xs text-primary-foreground/50">10 AM to 7 PM Monday to Saturday</p>
           </div>
 
           {/* Social Icons */}

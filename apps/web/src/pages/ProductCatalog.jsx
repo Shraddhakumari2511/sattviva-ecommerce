@@ -6,6 +6,7 @@ import { ShoppingCart, Star, Heart, SlidersHorizontal, ChevronDown } from 'lucid
 import { useCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+const API = import.meta.env.VITE_API_URL;
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 
@@ -64,7 +65,7 @@ useEffect(() => {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        "http://sattviva-ecommerce.onrender.com/api/products"
+        `${API}/products`,
       );
 
       const data = await response.json();
@@ -186,7 +187,7 @@ return filtered;
 const token = localStorage.getItem("token");
 
 await fetch(
-  "http://sattviva-ecommerce.onrender.com/api/cart/add",
+  `${API}/cart/add`,
   {
     method: "POST",
     headers: {

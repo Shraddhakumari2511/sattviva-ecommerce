@@ -70,17 +70,17 @@ const LabReportsPage = () => {
       </Helmet>
 
       <div className="bg-background">
-        <div className="bg-primary text-primary-foreground py-20">
+        <div className="bg-primary text-primary-foreground py-5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="heading-font text-5xl md:text-6xl font-bold mb-6 text-balance" style={{ letterSpacing: '-0.02em' }}>
+              <h3 className="heading-font text-5xl md:text-5xl font-bold mb-5 text-balance" style={{ letterSpacing: '-0.02em' }}>
                 Lab Reports & Certifications
-              </h1>
-              <p className="text-xl text-primary-foreground/90 max-w-3xl mx-auto leading-relaxed">
+              </h3>
+              <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto leading-relaxed">
                 Transparency you can trust. Every product is tested by certified laboratories to ensure purity, quality, and safety.
               </p>
             </motion.div>

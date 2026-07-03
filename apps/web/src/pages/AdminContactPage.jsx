@@ -2,6 +2,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+const API = import.meta.env.VITE_API_URL;
 
 const AdminContactPage = () => {
 
@@ -17,7 +18,7 @@ const AdminContactPage = () => {
 
       const response =
         await fetch(
-          "http://sattviva-ecommerce.onrender.com/api/contact/admin"
+          `${API}/api/contact/admin`
         );
 
       const data =
@@ -43,7 +44,8 @@ const AdminContactPage = () => {
 
     const response =
       await fetch(
-        `http://sattviva-ecommerce.onrender.com/api/contact/${id}`,
+        `${API}/contact/${id}`,
+        
         {
           method: "PUT",
 
@@ -94,7 +96,7 @@ const handleDelete = async (
 
     const response =
       await fetch(
-        `http://sattviva-ecommerce.onrender.com/api/contact/${id}`,
+        `${API}/contact/${id}`,
         {
           method: "DELETE",
         }
